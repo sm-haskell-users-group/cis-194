@@ -4,8 +4,8 @@ Author:                 James Cooper <james@bitmechanic.com>
 Maintainer:             James Cooper <james@bitmechanic.com>
 License:                BSD3
 License-File:           LICENSE
--- Synopsis:               
--- Description:            
+-- Synopsis:
+-- Description:
 Cabal-Version:          >= 1.10
 Build-Type:             Simple
 
@@ -14,7 +14,7 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Cis194.Hw.Week1
-  Other-Modules:        
+  Other-Modules:
   Build-Depends:        base >= 4 && < 5
                       , containers
 
@@ -29,7 +29,3 @@ Test-Suite spec
                       , hspec
                       , containers
                       , QuickCheck
-
-Source-Repository head
-  Type:                 git
---  Location:             
