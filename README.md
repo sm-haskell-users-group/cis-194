@@ -17,6 +17,8 @@ Add to .bashrc:
 export PATH=$HOME/Library/Haskell/bin:$PATH
 
 Then...
+
+    cabal update
     cabal install hspec
     cabal configure --enable-test
     cabal build
