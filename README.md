@@ -8,8 +8,15 @@ http://www.seas.upenn.edu/~cis194/lectures.html
 
 On a mac:
 
+    clone repo into cis194
     brew install haskell-platform
     cd cis194
+    
+Add to .bashrc:
+
+export PATH=$HOME/Library/Haskell/bin:$PATH
+
+Then...
     cabal install hspec
     cabal configure --enable-test
     cabal build
