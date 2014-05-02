@@ -8,13 +8,26 @@ http://www.seas.upenn.edu/~cis194/lectures.html
 
 On a mac:
 
-    clone repo into cis194
-    brew install haskell-platform
-    cd cis194
-    
-Add to .bashrc:
+    # Add Cabal path to PATH
+    touch ~/.bashrc
+    echo 'export PATH=$HOME/Library/Haskell/bin:$PATH' >> ~/.bashrc
 
-export PATH=$HOME/Library/Haskell/bin:$PATH
+    # Install haskell-platform
+    brew install haskell-platform
+
+    # Clone repo
+    git clone https://github.com/sm-haskell-users-group/cis-194 cis194
+    cd cis194
+
+On Linux:
+
+    # Add Cabal path to PATH
+    touch ~/.bashrc
+    echo 'export PATH=$PATH:$HOME/.cabal/bin' >> ~/.bashrc
+
+    # Clone repo
+    git clone https://github.com/sm-haskell-users-group/cis-194 cis194
+    cd cis194
 
 Then...
 
