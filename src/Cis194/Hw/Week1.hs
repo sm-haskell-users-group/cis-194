@@ -5,9 +5,12 @@ module Cis194.Hw.Week1 where
 -------------
 
 toDigits :: Integer -> [Integer]
-toDigits x
-    | x <= 0    = []
-    | otherwise = toDigits (x `div` 10) ++ [x `mod` 10]
+toDigits x = toDigitsTCORec x []
+
+toDigitsTCORec :: Integer -> [Integer] -> [Integer]
+toDigitsTCORec x xs
+    | x <= 0    = xs
+    | otherwise = toDigitsTCORec (x `div` 10) xs ++ [x `mod` 10]
 
 toDigitsRev :: Integer -> [Integer]
 toDigitsRev x = reverse (toDigits x)
