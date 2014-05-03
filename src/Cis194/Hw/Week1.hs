@@ -16,7 +16,9 @@ toDigitsRev :: Integer -> [Integer]
 toDigitsRev x = reverse (toDigits x)
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = xs
+doubleEveryOther xs = reverse (map
+                        (\(x, y) -> x * y)
+                        (zip (cycle [1,2]) (reverse xs)))
 
 sumDigits :: [Integer] -> Integer
 sumDigits _ = 0
