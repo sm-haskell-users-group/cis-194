@@ -21,7 +21,8 @@ doubleEveryOther xs = reverse (map
                         (zip (cycle [1,2]) (reverse xs)))
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = 0
+sumDigits [] = 0
+sumDigits (x:xs) = sum (toDigits x) + sumDigits xs
 
 validate :: Integer -> Bool
 validate _ = False
