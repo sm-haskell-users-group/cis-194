@@ -25,7 +25,7 @@ sumDigits [] = 0
 sumDigits (x:xs) = sum (toDigits x) + sumDigits xs
 
 validate :: Integer -> Bool
-validate _ = False
+validate x = ((sumDigits (doubleEveryOther (toDigits x))) `mod` 10) == 0
 
 ---------------------
 -- Towers of Hanoi --
