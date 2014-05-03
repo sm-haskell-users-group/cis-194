@@ -5,10 +5,12 @@ module Cis194.Hw.Week1 where
 -------------
 
 toDigits :: Integer -> [Integer]
-toDigits x = [x]
+toDigits x
+    | x <= 0    = []
+    | otherwise = toDigits (x `div` 10) ++ [x `mod` 10]
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev x = [x]
+toDigitsRev x = reverse (toDigits x)
 
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther xs = xs
