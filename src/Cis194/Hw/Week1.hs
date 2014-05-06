@@ -40,4 +40,8 @@ hanoi 1 from to _ = [(from, to)]
 hanoi size from to swap = (hanoi (size - 1) from swap to) ++ (hanoi 1 from to swap) ++ (hanoi (size - 1) swap to from)
 
 hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
-hanoi4 _ _ _ _ _ = []
+hanoi4 0 _ _ _ _ = []
+hanoi4 1 from to _ _ = [(from, to)]
+hanoi4 2 from to swap _ = [(from, swap), (from, to), (swap, to)]
+hanoi4 3 from to swap1 swap2 = [(from, swap1), (from, swap2), (from, to), (swap2, to), (swap1, to)]
+hanoi4 size from to swap1 swap2 = (hanoi4 (size - 1) from swap1 to swap2) ++ (hanoi4 1 from to swap1 swap2) ++ (hanoi4 (size - 1) swap1 to from swap2)
