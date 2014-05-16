@@ -20,6 +20,18 @@ doubleEveryOther xs = reverse (map
                         (\(x, y) -> x * y)
                         (zip (cycle [1,2]) (reverse xs)))
 
+doubleEveryOther' :: [Integer] -> [Integer]
+doubleEveryOther' xs = r
+    where (_, r) = doubleEveryOtherRec xs
+
+doubleEveryOtherRec :: [Integer] -> (Bool, [Integer])
+doubleEveryOtherRec [] = (False, [])
+doubleEveryOtherRec (x:xs) =
+        if d
+        then (False, (x * 2) : rest)
+        else (True, x : rest)
+    where (d, rest) = doubleEveryOtherRec xs
+
 sumDigits :: [Integer] -> Integer
 sumDigits [] = 0
 sumDigits (x:xs) = sum (toDigits x) + sumDigits xs
