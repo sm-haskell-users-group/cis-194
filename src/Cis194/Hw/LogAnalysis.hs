@@ -6,13 +6,17 @@ module Cis194.Hw.LogAnalysis where
 import  Cis194.Hw.Log
 
 parseMessage :: String -> LogMessage
-parseMessage s = Unknown s
+parseMessage s
+    | words s !! 0 == "E" = LogMessage (Error (read $ words s !! 1 :: Int)) (read $ words s !! 2 :: Int) (unwords . drop 3 $ words s)
+    | words s !! 0 == "I" = LogMessage Info (read $ words s !! 1 :: Int) (unwords . drop 2 $ words s)
+    | otherwise           = Unknown s
 
 parse :: String -> [LogMessage]
-parse _ = []
+parse s = map parseMessage (lines s)
 
 insert :: LogMessage -> MessageTree -> MessageTree
-insert _ t = t
+insert l t
+    | otherwise = t
 
 build :: [LogMessage] -> MessageTree
 build _ = Leaf
