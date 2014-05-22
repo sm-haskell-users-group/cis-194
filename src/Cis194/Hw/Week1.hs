@@ -39,6 +39,15 @@ doubleEveryOtherRec (x:xs) =
         else (True, x : rest)
     where (d, rest) = doubleEveryOtherRec xs
 
+doubleEveryOther'1' :: [Integer] -> [Integer]
+doubleEveryOther'1' [] = []
+doubleEveryOther'1' [x] = [x]
+doubleEveryOther'1' (x : xs) = if h == (head xs)
+                               then (x * 2) : rest
+                               else x : rest
+    where rest = doubleEveryOther'1' xs
+          h = head rest
+
 doubleEveryOther = doubleEveryOther'1
 
 sumDigits :: [Integer] -> Integer
