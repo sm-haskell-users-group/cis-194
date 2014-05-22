@@ -15,13 +15,20 @@ toDigitsTCORec x xs
 toDigitsRev :: Integer -> [Integer]
 toDigitsRev x = reverse (toDigits x)
 
-doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = reverse (map
+doubleEveryOther'3 :: [Integer] -> [Integer]
+doubleEveryOther'3 xs = reverse (map
                         (\(x, y) -> x * y)
                         (zip (cycle [1,2]) (reverse xs)))
 
-doubleEveryOther' :: [Integer] -> [Integer]
-doubleEveryOther' xs = r
+doubleEveryOther'2 xs = map
+                            (\(x, y) -> x * y)
+                            (zip (cycle _c) xs)
+    where _c = if (length xs `mod` 2 == 1)
+               then [1, 2]
+               else [2, 1]
+
+doubleEveryOther'1 :: [Integer] -> [Integer]
+doubleEveryOther'1 xs = r
     where (_, r) = doubleEveryOtherRec xs
 
 doubleEveryOtherRec :: [Integer] -> (Bool, [Integer])
@@ -31,6 +38,8 @@ doubleEveryOtherRec (x:xs) =
         then (False, (x * 2) : rest)
         else (True, x : rest)
     where (d, rest) = doubleEveryOtherRec xs
+
+doubleEveryOther = doubleEveryOther'1
 
 sumDigits :: [Integer] -> Integer
 sumDigits [] = 0
