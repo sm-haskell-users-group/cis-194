@@ -29,7 +29,7 @@ parseMessage ('E' : ' ' : line) = LogMessage (Error errorCode) timestamp message
 parseMessage s = Unknown s
 
 parse :: String -> [LogMessage]
-parse _ = []
+parse file = map parseMessage (lines file)
 
 insert :: LogMessage -> MessageTree -> MessageTree
 insert _ t = t
