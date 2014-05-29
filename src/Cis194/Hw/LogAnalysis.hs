@@ -45,7 +45,7 @@ insert m tree = if (lm_ts m) < (lm_ts center)
     where (Node left center right) = tree
 
 build :: [LogMessage] -> MessageTree
-build _ = Leaf
+build messages = foldl (\ tree m -> insert m tree) Leaf messages
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder _ = []
