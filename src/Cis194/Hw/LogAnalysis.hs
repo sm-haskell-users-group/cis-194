@@ -31,8 +31,18 @@ parseMessage s = Unknown s
 parse :: String -> [LogMessage]
 parse file = map parseMessage (lines file)
 
+lm_ts :: LogMessage -> TimeStamp
+lm_ts (LogMessage _ ts _) = ts
+lm_ts (Unknown _) = -1
+
 insert :: LogMessage -> MessageTree -> MessageTree
-insert _ t = t
+insert (Unknown _) tree = tree
+insert m Leaf = Node Leaf m Leaf
+
+insert m tree = if (lm_ts m) < (lm_ts center)
+    then Node (insert m left) center right
+    else Node left center (insert m right)
+    where (Node left center right) = tree
 
 build :: [LogMessage] -> MessageTree
 build _ = Leaf
