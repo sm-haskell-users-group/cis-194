@@ -15,8 +15,17 @@ parse :: String -> [LogMessage]
 parse s = map parseMessage (lines s)
 
 insert :: LogMessage -> MessageTree -> MessageTree
-insert l t
-    | otherwise = t
+insert l Leaf = Node Leaf l Leaf
+insert l (Node left message right)
+--    | isLogMessage && messageType == "(Error" = Node t l t -- divide the tree in left and right
+--    | isLogMessage && messageType == "Info"   = Node t l t -- divide the tree in left and right
+    | isLogMessage == False     = t
+    | otherwise                 = Node left l right
+    where isLogMessage          = words (show l) !! 0 == "LogMessage"
+          messageType           = words (show l) !! 1
+          timeStampErrorMessage = words (show l) !! 3
+          timeStampInfoMessage  = words (show l) !! 2
+          t                     = Node left message right
 
 build :: [LogMessage] -> MessageTree
 build _ = Leaf
