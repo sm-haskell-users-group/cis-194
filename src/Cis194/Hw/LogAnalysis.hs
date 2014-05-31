@@ -7,23 +7,11 @@ import  Cis194.Hw.Log
 
 parseMessage :: String -> LogMessage
 
-parseMessage ('W' : ' ' : line) = LogMessage Info timestamp message
-    where splitLine = words line
-          timestamp = read $ splitLine !! 0
-          message = unwords $ drop 1 splitLine
-
-parseMessage ('I' : ' ' : line) = LogMessage Info timestamp message
-    where splitLine = words line
-          timestamp = read $ splitLine !! 0
-          message = unwords $ drop 1 splitLine
-
-parseMessage ('E' : ' ' : line) = LogMessage (Error errorCode) timestamp message
-    where splitLine = words line
-          timestamp = read $ splitLine !! 1
-          errorCode = read $ splitLine !! 0
-          message = unwords $ drop 2 splitLine
-
-parseMessage s = Unknown s
+parseMessage s = case (words s) of
+    ("W" : ts : xs) -> LogMessage Warning (read ts) (unwords xs)
+    ("I" : ts : xs) -> LogMessage Info (read ts) (unwords xs)
+    ("E" : ec : ts : xs) -> LogMessage (Error $ read ec) (read ts) (unwords xs)
+    _   -> Unknown s
 
 parse :: String -> [LogMessage]
 parse file = map parseMessage (lines file)
