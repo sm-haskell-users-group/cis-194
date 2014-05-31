@@ -40,13 +40,13 @@ inOrder (Node left m right) = inOrder left ++ [m] ++ inOrder right
 -- messages corresponding to any errors with a severity of 50 or greater,
 -- sorted by timestamp.
 
-isError :: LogMessage -> Bool
-isError (LogMessage (Error _) _ _) = True
-isError _ = False
+isRelevant :: LogMessage -> Bool
+isRelevant (LogMessage (Error errlev) _ _) = errlev >= 50
+isRelevant _ = False
+
+lm_m :: LogMessage -> String
+lm_m (LogMessage _ _ m) = m
+lm_m (Unknown s) = s
 
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong allMessages = errorLogs
-    where sortedMessages = inOrder $ build allMessages
-          errorMessages = filter isError sortedMessages
-          highSeverity = filter (\ (LogMessage (Error level) _ _) -> level >= 50) errorMessages
-          errorLogs = map (\ (LogMessage _ _ m) -> m) highSeverity
+whatWentWrong allMessages = map lm_m $ filter isRelevant $ inOrder $ build allMessages
