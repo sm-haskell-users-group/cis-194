@@ -49,4 +49,4 @@ lm_m (LogMessage _ _ m) = m
 lm_m (Unknown s) = s
 
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong allMessages = map lm_m $ filter isRelevant $ inOrder $ build allMessages
+whatWentWrong = (map lm_m) . (filter isRelevant) . inOrder . build
