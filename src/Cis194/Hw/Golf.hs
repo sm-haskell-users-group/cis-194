@@ -13,8 +13,14 @@ takeEvery n xs
 skips :: [a] -> [[a]]
 skips xs = zipWith takeEvery [1.. (length xs)] (cycle [xs])
 
+sliding :: Int -> [a] -> [[a]]
+sliding i xs = map (\x -> take i $ drop x xs) [0..(l - i)]
+    where l = length xs
+
 localMaxima :: [Integer] -> [Integer]
-localMaxima _ = []
+localMaxima xs
+    | length xs < 3 = []
+    | otherwise = map (!! 1) $ filter (\l -> maximum l == l !! 1) $ sliding 3 xs
 
 histogram :: [Integer] -> String
 histogram _ = ""
