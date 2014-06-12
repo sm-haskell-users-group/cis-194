@@ -8,6 +8,16 @@ main = hspec spec
 
 spec :: Spec
 spec = do
+  describe "TakeEvery" $ do
+    it "should handle empty lists" $ do
+      takeEvery 100 ([] :: [Integer]) `shouldBe` []
+
+    it "should handle values less than 1" $ do
+      takeEvery (-5) [1,2,3,4] `shouldBe` []
+
+    it "should return identity" $ do
+      takeEvery 1 "hello" `shouldBe` "hello"
+
   describe "Hopscotch" $ do
     it "should skip every nth letter" $ do
       skips "ABCD" `shouldBe` ["ABCD", "BD", "C", "D"]
