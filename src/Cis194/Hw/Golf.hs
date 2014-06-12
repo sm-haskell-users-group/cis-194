@@ -4,6 +4,8 @@ import Data.Maybe
 import Data.List
 import qualified Data.HashMap.Lazy as LazyMap
 
+-- skips utilities
+
 mapWithIndex :: ((Int, a) -> Maybe a) -> [a] -> [a]
 mapWithIndex f xs = mapMaybe f $ zip [1..] xs
 
@@ -15,6 +17,8 @@ takeEvery n xs
 skips :: [a] -> [[a]]
 skips xs = zipWith takeEvery [1.. (length xs)] (cycle [xs])
 
+-- localMaxima utilities
+
 sliding :: Int -> [a] -> [[a]]
 sliding i xs = map (\x -> take i $ drop x xs) [0..(l - i)]
     where l = length xs
@@ -23,6 +27,8 @@ localMaxima :: [Integer] -> [Integer]
 localMaxima xs
     | length xs < 3 = []
     | otherwise = map (!! 1) $ filter (\l -> maximum l == l !! 1) $ sliding 3 xs
+
+-- histogram utilities
 
 rep :: Integer -> a -> [a]
 rep _i ch = take i $ repeat ch
