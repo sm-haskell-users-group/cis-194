@@ -1,6 +1,8 @@
 module Cis194.Hw.Golf where
 
 import Data.Maybe
+import Data.List
+import qualified Data.HashMap.Lazy as LazyMap
 
 mapWithIndex :: ((Int, a) -> Maybe a) -> [a] -> [a]
 mapWithIndex f xs = mapMaybe f $ zip [1..] xs
@@ -22,5 +24,25 @@ localMaxima xs
     | length xs < 3 = []
     | otherwise = map (!! 1) $ filter (\l -> maximum l == l !! 1) $ sliding 3 xs
 
+rep :: Integer -> a -> [a]
+rep _i ch = take i $ repeat ch
+    where i = fromInteger _i
+
+hbuild :: LazyMap.HashMap Integer Integer
+hbuild = LazyMap.fromList $ zip [0..9] $ repeat 0
+
+hgroup :: [Integer] -> [[Integer]]
+hgroup = Data.List.group . Data.List.sort
+
+hupdate :: [Integer] -> LazyMap.HashMap Integer Integer -> LazyMap.HashMap Integer Integer
+hupdate xs hm = LazyMap.insert (head xs) (toInteger $ length xs) hm
+
+step1 :: [Integer] -> LazyMap.HashMap Integer Integer
+step1 xs = foldr hupdate hbuild $ hgroup xs
+
+step2 :: LazyMap.HashMap Integer Integer -> [[String]]
+step2 hm = LazyMap.foldlWithKey' (\a k v -> ([show k, "="] ++ rep v "*" ++ rep (max - v) " ") : a) [] hm
+    where max = maximum $ LazyMap.elems hm
+
 histogram :: [Integer] -> String
-histogram _ = ""
+histogram xs = unlines $ map (reverse . foldl (++) "") $ reverse $ Data.List.transpose $ step2 $ step1 xs
