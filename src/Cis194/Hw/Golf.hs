@@ -37,12 +37,9 @@ hgroup = Data.List.group . Data.List.sort
 hupdate :: [Integer] -> LazyMap.HashMap Integer Integer -> LazyMap.HashMap Integer Integer
 hupdate xs hm = LazyMap.insert (head xs) (toInteger $ length xs) hm
 
-step1 :: [Integer] -> LazyMap.HashMap Integer Integer
-step1 xs = foldr hupdate hbuild $ hgroup xs
-
-step2 :: LazyMap.HashMap Integer Integer -> [[String]]
-step2 hm = LazyMap.foldlWithKey' (\a k v -> ([show k, "="] ++ rep v "*" ++ rep (max - v) " ") : a) [] hm
+hflatten :: LazyMap.HashMap Integer Integer -> [[String]]
+hflatten hm = LazyMap.foldlWithKey' (\a k v -> ([show k, "="] ++ rep v "*" ++ rep (max - v) " ") : a) [] hm
     where max = maximum $ LazyMap.elems hm
 
 histogram :: [Integer] -> String
-histogram xs = unlines $ map (reverse . foldl (++) "") $ reverse $ Data.List.transpose $ step2 $ step1 xs
+histogram xs = unlines $ map (reverse . foldl (++) "") $ reverse $ transpose $ hflatten $ foldr hupdate hbuild $ hgroup xs
