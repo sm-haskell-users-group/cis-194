@@ -15,7 +15,7 @@ takeEvery n xs
     | otherwise = []
 
 skips :: [a] -> [[a]]
-skips xs = zipWith takeEvery [1.. (length xs)] (cycle [xs])
+skips xs = zipWith takeEvery [1.. (length xs)] $ repeat xs
 
 -- localMaxima utilities
 
