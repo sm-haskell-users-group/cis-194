@@ -28,6 +28,9 @@ localMaxima xs
     | length xs < 3 = []
     | otherwise = map (!! 1) $ filter (\l -> maximum l == l !! 1) $ sliding 3 xs
 
+localMaxima' m = concatMap (\[x,y,z] -> if y > x && y > z then [y] else []) [ x | x <- map (take 3) $ tails m, length x == 3]
+localMaxima'' m = mapMaybe (\[x,y,z] -> if y > x && y > z then Just y else Nothing) [ x | x <- map (take 3) $ tails m, length x == 3]
+
 -- histogram utilities
 
 rep :: Integer -> a -> [a]
