@@ -15,26 +15,34 @@ parse :: String -> [LogMessage]
 parse s = map parseMessage (lines s)
 
 insert :: LogMessage -> MessageTree -> MessageTree
-insert l Leaf = Node Leaf l Leaf
-insert l (Node left message right)
---    | isLogMessage && messageType == "(Error" = Node t l t -- divide the tree in left and right
---    | isLogMessage && messageType == "Info"   = Node t l t -- divide the tree in left and right
-    | isLogMessage == False     = t
-    | otherwise                 = Node left l right
-    where isLogMessage          = words (show l) !! 0 == "LogMessage"
-          messageType           = words (show l) !! 1
-          timeStampErrorMessage = words (show l) !! 3
-          timeStampInfoMessage  = words (show l) !! 2
-          t                     = Node left message right
+insert (Unknown _) tree         = tree
+insert m Leaf = Node Leaf m Leaf
+insert m tree = if (lm_ts m) < (lm_ts center)
+                    then Node (insert m left) center right
+                    else Node left center (insert m right)
+                    where (Node left center right) = tree
+
+lm_ts :: LogMessage -> TimeStamp
+lm_ts (LogMessage _ ts _) = ts
+tm_ts (Unknown _) = -1
 
 build :: [LogMessage] -> MessageTree
-build _ = Leaf
+build messages = foldl (flip insert) Leaf messages
 
 inOrder :: MessageTree -> [LogMessage]
-inOrder _ = []
+inOrder Leaf = []
+inOrder (Node left m right) = inOrder left ++ [m] ++ inOrder right
 
 -- whatWentWrong takes an unsorted list of LogMessages, and returns a list of the
 -- messages corresponding to any errors with a severity of 50 or greater,
 -- sorted by timestamp.
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong _ = []
+whatWentWrong = (map lm_m) . (filter isRelevant) . inOrder . build
+
+isRelevant :: LogMessage -> Bool
+isRelevant (LogMessage (Error severity) _ _) = severity >= 50
+isRelevant _ = False
+
+lm_m :: LogMessage -> String
+lm_m (LogMessage _ _ m) = m
+lm_m (Unknown s) = s

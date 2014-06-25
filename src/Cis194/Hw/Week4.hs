@@ -7,7 +7,7 @@ fun1 (x:xs)
   | otherwise = fun1 xs
 
 fun1' :: [Integer] -> Integer
-fun1' _ = 0
+fun1' x = product . map (+(-2)) $ filter (even) x
 
 fun2 :: Integer -> Integer
 fun2 1 = 0
@@ -25,7 +25,7 @@ foldTree :: [a] -> Tree a
 foldTree _ = Leaf
 
 xor :: [Bool] -> Bool
-xor _ = False
+xor x = odd (length $ filter (==True) x)
 
 map' :: (a -> b) -> [a] -> [b]
 map' _ _ = []
