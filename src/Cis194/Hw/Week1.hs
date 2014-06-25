@@ -1,24 +1,32 @@
 module Cis194.Hw.Week1 where
+import Data.Char
 
 -------------
 -- Ex 1-4  --
 -------------
 
 toDigits :: Integer -> [Integer]
-toDigits x = [x]
+toDigits 0 = []
+toDigits nr = [ fromIntegral (digitToInt c) | c <- show nr, 
+                    isNumber c, nr > 0 ]
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev x = [x]
+toDigitsRev nr = reverse $ toDigits nr
 
-doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = xs
+doubleEveryOther_ :: [Integer] -> [Integer]
+doubleEveryOther_  [] = []
+doubleEveryOther_  [x] = [x]
+doubleEveryOther_  (x:y:xs) = x : (2 * y) : doubleEveryOther_ xs
+doubleEveryOther xs = reverse $ doubleEveryOther_  $ reverse xs
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = 0
+sumDigits [] = 0
+sumDigits (x:xs) = sumD (toDigits x) + sumDigits xs
+  where sumD (x:xs) = x + sumD xs 
+        sumD [] = 0
 
 validate :: Integer -> Bool
-validate _ = False
-
+validate nr  = mod (sumDigits $ doubleEveryOther $ toDigits nr ) 10 == 0
 ---------------------
 -- Towers of Hanoi --
 ---------------------
