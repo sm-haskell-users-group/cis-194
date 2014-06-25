@@ -21,9 +21,7 @@ doubleEveryOther xs = reverse $ doubleEveryOther_  $ reverse xs
 
 sumDigits :: [Integer] -> Integer
 sumDigits [] = 0
-sumDigits (x:xs) = sumD (toDigits x) + sumDigits xs
-  where sumD (x:xs) = x + sumD xs 
-        sumD [] = 0
+sumDigits (x:xs) = sum (toDigits x) + sumDigits xs
 
 validate :: Integer -> Bool
 validate nr  = mod (sumDigits $ doubleEveryOther $ toDigits nr ) 10 == 0
