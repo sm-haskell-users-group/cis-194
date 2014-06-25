@@ -27,6 +27,8 @@ foldTree _ = Leaf
 xor :: [Bool] -> Bool
 xor x = odd (length $ filter (==True) x)
 
+xor' x = odd $ foldl (+) 0 [length $ (filter (==True) x)] -- it's not pretty, but it's using a fold as required :p
+
 map' :: (a -> b) -> [a] -> [b]
 map' _ _ = []
 
