@@ -5,19 +5,40 @@ module Cis194.Hw.Week1 where
 -------------
 
 toDigits :: Integer -> [Integer]
-toDigits x = [x]
+toDigits 0 = []
+toDigits cardNumber =
+  reverse $ toDigitsRev cardNumber
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev x = [x]
+toDigitsRev 0 = []
+toDigitsRev cardNumber =
+  if
+    cardNumber < 0 then []
+  else
+    cardNumber `mod` 10 : toDigitsRev(cardNumber `div` 10)
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = xs
+doubleEveryOther [] = []
+doubleEveryOther [x] = [x]
+doubleEveryOther (x:y:zs) = x : 2*y : doubleEveryOther zs
+
+sumIfGreaterThanNine :: Integer -> Integer
+sumIfGreaterThanNine n =
+  if
+    (n `div` 10) == 0 then n
+  else
+    sum(toDigits n)
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = 0
+sumDigits listOfDigits =
+  sum $ map sumIfGreaterThanNine listOfDigits
+
+checkSum :: Integer -> Bool
+checkSum n = (n `mod` 10) == 0
 
 validate :: Integer -> Bool
-validate _ = False
+validate n =
+  checkSum . sumDigits . doubleEveryOther $ toDigitsRev n
 
 ---------------------
 -- Towers of Hanoi --
