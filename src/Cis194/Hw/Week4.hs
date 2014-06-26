@@ -30,7 +30,7 @@ xor x = odd (length $ filter (==True) x)
 xor' x = odd $ foldl (+) 0 [length $ (filter (==True) x)] -- it's not pretty, but it's using a fold as required :p
 
 map' :: (a -> b) -> [a] -> [b]
-map' _ _ = []
+map' f z = foldr (\x acc -> f x : acc) [] z
 
 sieveSundaram :: Integer -> [Integer]
 sieveSundaram _ = []
