@@ -34,7 +34,8 @@ insert m1 (Node t1 m2 t2)
 
 build :: [LogMessage] -> MessageTree
 build [] = Leaf
-build ms = insert (last ms) (build (init ms))
+build ms = foldl (flip insert) Leaf ms
+{-build ms = insert (last ms) (build (init ms))-}
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
