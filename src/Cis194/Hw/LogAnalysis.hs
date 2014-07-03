@@ -20,17 +20,13 @@ parseMessage s = Unknown s
 parse :: String -> [LogMessage]
 parse s = map parseMessage (lines s)
 
-timestampFromMessage :: LogMessage -> Maybe TimeStamp
-timestampFromMessage (Unknown _) = Nothing
-timestampFromMessage (LogMessage _ x _) = Just x
-
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) tree = tree
 insert message Leaf = Node Leaf message Leaf
 insert message1 (Node left message2 right)
-  | timestampFromMessage message1 > timestampFromMessage message2 =
+  | timeStamp message1 > timeStamp message2 =
     Node left message2 (insert message1 right)
-  | timestampFromMessage message1 <= timestampFromMessage message2 =
+  | timeStamp message1 <= timeStamp message2 =
     Node (insert message1 left) message2 right
 
 
@@ -50,9 +46,14 @@ returnMessageIfVital (LogMessage (Error n) _ message)
   | otherwise = ""
 returnMessageIfVital _ = ""
 
+isVital :: LogMessage -> Bool
+isVital (LogMessage (Error n) _ message) =
+  if n > 50 then True else False
+isVital _ = False
+
 -- whatWentWrong takes an unsorted list of LogMessages, and returns a list of thed
 -- messages corresponding to any errors with a severity of 50 or greater,
 -- sorted by timestamp.
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong [] = []
-whatWentWrong x = filter (not . null) (map returnMessageIfVital (inOrder $ build x))
+whatWentWrong x = map message (inOrder $ build $ filter isVital x)

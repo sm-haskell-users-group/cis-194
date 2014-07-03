@@ -10,8 +10,12 @@ data MessageType = Info
 
 type TimeStamp = Int
 
-data LogMessage = LogMessage MessageType TimeStamp String
-                | Unknown String
+data LogMessage = LogMessage {
+    messageType :: MessageType,
+    timeStamp   :: TimeStamp,
+    message     :: String
+  }
+  | Unknown String
   deriving (Show, Eq)
 
 data MessageTree = Leaf
@@ -35,4 +39,4 @@ testWhatWentWrong :: (String -> [LogMessage])
                   -> IO [String]
 testWhatWentWrong parse whatWentWrong file
   = whatWentWrong . parse <$> readFile file
-  
+
