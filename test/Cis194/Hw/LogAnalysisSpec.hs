@@ -39,6 +39,7 @@ spec = do
       let foo = LogMessage Warning 10 "foo"
       let baz = LogMessage Warning 5 "baz"
       let bif = LogMessage Warning 15 "bif"
+      let bung = LogMessage Warning 7 "bung"
 
       let a = Node Leaf foo Leaf
       let b = insert baz a
@@ -48,6 +49,12 @@ spec = do
       c `shouldBe` Node (Node Leaf baz Leaf) foo (Node Leaf bif Leaf)
 
   describe "build" $ do
+    it "builds a simple MessageTree from a list of LogMessages" $ do
+      let foo = LogMessage Warning 10 "foo"
+      let baz = LogMessage Warning 5 "baz"
+
+      build [foo, baz] `shouldBe` Node (Node Leaf baz Leaf) foo Leaf
+
     it "builds a MessageTree from a list of LogMessages" $ do
       let foo = LogMessage Warning 10 "foo"
       let baz = LogMessage Warning 5 "baz"
