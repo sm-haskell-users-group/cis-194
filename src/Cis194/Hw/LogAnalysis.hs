@@ -7,8 +7,8 @@ import  Cis194.Hw.Log
 
 createLogMessage :: MessageType -> [String] -> LogMessage
 createLogMessage _ [] = Unknown ""
-createLogMessage typ (timeStamp:message) =
-  LogMessage typ (read timeStamp) (unwords message)
+createLogMessage typ (ts:message) =
+  LogMessage typ (read ts) (unwords message)
 
 parseMessage :: String -> LogMessage
 parseMessage ('I':xs) = createLogMessage Info (words xs)
@@ -32,23 +32,15 @@ insert message1 (Node left message2 right)
 
 build :: [LogMessage] -> MessageTree
 build [] = Leaf
-build x = foldl (\tree message -> insert message tree) Leaf x
+build x = foldl (flip insert) Leaf x
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node Leaf message Leaf) = [message]
 inOrder (Node left message right) =
   (inOrder left) ++ [message] ++ (inOrder right)
 
-returnMessageIfVital :: LogMessage -> String
-returnMessageIfVital (LogMessage (Error n) _ message)
-  | n >= 50 = message
-  | otherwise = ""
-returnMessageIfVital _ = ""
-
 isVital :: LogMessage -> Bool
-isVital (LogMessage (Error n) _ message) =
-  if n > 50 then True else False
+isVital (LogMessage (Error n) _ _) = n > 50
 isVital _ = False
 
 -- whatWentWrong takes an unsorted list of LogMessages, and returns a list of thed
@@ -56,4 +48,4 @@ isVital _ = False
 -- sorted by timestamp.
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong [] = []
-whatWentWrong x = map message (inOrder $ build $ filter isVital x)
+whatWentWrong x = map messageString (inOrder $ build $ filter isVital x)

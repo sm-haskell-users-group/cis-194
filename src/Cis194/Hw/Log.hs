@@ -11,9 +11,9 @@ data MessageType = Info
 type TimeStamp = Int
 
 data LogMessage = LogMessage {
-    messageType :: MessageType,
-    timeStamp   :: TimeStamp,
-    message     :: String
+    messageType   :: MessageType,
+    timeStamp     :: TimeStamp,
+    messageString :: String
   }
   | Unknown String
   deriving (Show, Eq)
