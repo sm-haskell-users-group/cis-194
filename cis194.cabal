@@ -13,9 +13,7 @@ Library
   Default-Language:     Haskell2010
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
-  Exposed-Modules:      Cis194.Hw.Week1
-                      , Cis194.Hw.Log
-                      , Cis194.Hw.LogAnalysis
+  Exposed-Modules:      Cis194.Hw
   Other-Modules:
   Build-Depends:        base >= 4 && < 5
                       , containers

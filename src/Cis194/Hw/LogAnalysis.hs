@@ -1,5 +1,12 @@
 {-# OPTIONS_GHC -Wall #-}
-module Cis194.Hw.LogAnalysis where
+module Cis194.Hw.LogAnalysis
+    ( parseMessage
+    , parse
+    , insert
+    , build
+    , inOrder
+    , whatWentWrong
+    ) where
 
 -- in ghci, you may need to specify an additional include path:
 -- Prelude> :set -isrc

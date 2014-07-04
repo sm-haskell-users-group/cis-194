@@ -1,5 +1,11 @@
 -- CIS 194 Homework 2
-module Cis194.Hw.Log where
+module Cis194.Hw.Log
+    ( testParse
+    , testWhatWentWrong
+    , MessageType (..)
+    , LogMessage (..)
+    , MessageTree (..)
+    ) where
 
 import Control.Applicative
 

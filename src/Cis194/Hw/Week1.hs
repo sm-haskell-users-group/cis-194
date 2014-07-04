@@ -1,4 +1,10 @@
-module Cis194.Hw.Week1 where
+module Cis194.Hw.Week1
+    ( toDigits
+    , doubleEveryOther
+    , sumDigits
+    , validate
+    , hanoi
+    ) where
 
 -------------
 -- Ex 1-4  --
