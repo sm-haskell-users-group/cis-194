@@ -9,7 +9,8 @@ skips x =
   let y = (zip x [1..])
   in foldl (\a (b, c) -> a ++ [(f y c)]) [] y
 
--- f mods based on an integer than reduces the tuple to the original element
+-- f takes a list of tuples comprised of an element and an index and another index and returns an array of elements whos indexes divide evenly into the other index
+
 f :: [(a, Integer)] -> Integer -> [a]
 f x y = map fst $ filter (\(a, b) -> (mod b y) == 0) x
 
@@ -20,7 +21,6 @@ localMaxima (x:a@(y:z:_)) =
 localMaxima _ = []
 
 -- transpose $ group $ sort x is creating an array of arrays with unique groupings of values.
--- 'c' creates a the string row based on one grouping. these need to be reversed because the transpose method fills in from left to right.
 histogram :: [Integer] -> String
 histogram x = foldl c "==========\n0123456789\n" (transpose $ group $ sort x)
 
