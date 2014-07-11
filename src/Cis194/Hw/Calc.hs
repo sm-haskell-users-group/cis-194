@@ -1,7 +1,10 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Cis194.Hw.Calc where 
 
 import  Cis194.Hw.ExprT
 import  Cis194.Hw.Parser
+import qualified Cis194.Hw.StackVM as VM (Program, Stack, StackExp(..), StackVal(..))
 
 newtype MinMax = MinMax Integer deriving (Eq, Show)
 newtype Mod7 = Mod7 Integer deriving (Eq, Show)
@@ -44,6 +47,11 @@ instance Expr Mod7 where
     add (Mod7 x) (Mod7 y) = Mod7 $ (x + y) `mod` 7
     mul (Mod7 x) (Mod7 y) = Mod7 $ (x * y) `mod` 7
 
+instance Expr VM.Program where
+    lit x = [VM.PushI x]
+    add x y = x ++ y ++ [VM.Add]
+    mul x y = x ++ y ++ [VM.Mul]
+
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
 
@@ -51,3 +59,4 @@ testInteger = testExp :: Maybe Integer
 testBool = testExp :: Maybe Bool
 testMM = testExp :: Maybe MinMax
 testSat = testExp :: Maybe Mod7
+testProgram = testExp :: Maybe VM.Program
