@@ -6,3 +6,6 @@ week2:
 
 week3:
 	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/GolfSpec.hs
+
+week4:
+	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/Week4Spec.hs

@@ -28,3 +28,4 @@ histogram x = foldl c "==========\n0123456789\n" (transpose $ group $ sort x)
 c :: String -> [Integer] -> String
 c a x =
   (foldl (\y z -> let (ys, _:zs) = splitAt z y in ys ++ "*" ++ zs) "          \n" (map fromIntegral x)) ++ a
+
