@@ -34,9 +34,10 @@ xor :: [Bool] -> Bool
 xor = odd . length . filter id
 
 map' :: (a -> b) -> [a] -> [b]
--- map' f xs = foldl (\a x -> (f x) : a) [] xs
--- map' f = foldl (\a x -> (f x) : a) []
+map' f xs = foldl (\a x -> (f x) : a) [] xs
+map' f = foldl (\a x -> (f x) : a) []
 map' = (flip $ foldr . (\f x a -> f x : a)) []
+--map' =  flip foldr [] . ((:) .)
 
 sieveSundaram :: Integer -> [Integer]
 sieveSundaram _ = []
