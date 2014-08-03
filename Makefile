@@ -12,3 +12,6 @@ week4:
 
 week5:
 	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/CalcSpec.hs
+
+week6:
+	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/StackVMSpec.hs
