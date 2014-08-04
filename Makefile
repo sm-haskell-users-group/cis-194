@@ -9,3 +9,6 @@ week3:
 
 week4:
 	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/Week4Spec.hs
+
+week5:
+	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/CalcSpec.hs

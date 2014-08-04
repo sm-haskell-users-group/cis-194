@@ -31,7 +31,6 @@ data Tree a = Leaf
 
 foldTree :: [a] -> Tree a
 foldTree [] = Leaf
-foldTree [x] = Node 0 Leaf x Leaf
 foldTree xs = foldr (flip createTree) Leaf xs
 
 createTree :: Tree a -> a -> Tree a
