@@ -7,6 +7,7 @@ import Cis194.Hw.JoinList
 import Sized
 
 import Data.Monoid
+import Debug.Trace
 
 (!!?) :: [a] -> Int -> Maybe a
 [] !!? _ = Nothing
@@ -38,6 +39,24 @@ spec = do
                    (Single (Size 1) "h")
       let t = (\i -> (indexJ i jl) `shouldBe` (jlToList jl !!? i))
 
+      t 0
+      t 1
+      t 2
+      t 3
+      t 4
+
+    it "should support dropping" $ do
+      let jl = Append (Size 3)
+                   (Append (Size 2)
+                     (Single (Size 1) "y")
+                     (Single (Size 1) "ea"))
+                   (Single (Size 1) "h")
+
+      let t = \i -> let lhs = (jlToList $ dropJ i jl)
+                        rhs = (drop i $ jlToList jl)
+                    in lhs `shouldBe` rhs
+--                    in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
+      t (-1)
       t 0
       t 1
       t 2
