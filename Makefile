@@ -15,3 +15,6 @@ week5:
 
 week6:
 	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/StackVMSpec.hs
+
+week7:
+	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/JoinListSpec.hs
