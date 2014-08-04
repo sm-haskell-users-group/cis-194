@@ -22,6 +22,12 @@ type EditorList = JoinList (Product Int) Char
 
 spec :: Spec
 spec = do
+  let jl1 = Append (Size 3)
+               (Append (Size 2)
+                 (Single (Size 1) "y")
+                 (Single (Size 1) "ea"))
+               (Single (Size 1) "h")
+
   describe "JoinList" $ do
     it "should handle empty" $ do
       (Empty :: EditorList) `shouldBe` Empty
@@ -32,33 +38,24 @@ spec = do
       (Append (Product 6) (Single (Product 2) 'a') (Single (Product 3) 'b'))
 
     it "should support indexing" $ do
-      let jl = Append (Size 3)
-                   (Append (Size 2)
-                     (Single (Size 1) "y")
-                     (Single (Size 1) "ea"))
-                   (Single (Size 1) "h")
-      let t = (\i -> (indexJ i jl) `shouldBe` (jlToList jl !!? i))
+      let t = \jl i -> let lhs = (indexJ i jl)
+                           rhs = (jlToList jl !!? i)
+                       in lhs `shouldBe` rhs
 
-      t 0
-      t 1
-      t 2
-      t 3
-      t 4
+      t jl1 0
+      t jl1 1
+      t jl1 2
+      t jl1 3
+      t jl1 4
 
     it "should support dropping" $ do
-      let jl = Append (Size 3)
-                   (Append (Size 2)
-                     (Single (Size 1) "y")
-                     (Single (Size 1) "ea"))
-                   (Single (Size 1) "h")
-
-      let t = \i -> let lhs = (jlToList $ dropJ i jl)
-                        rhs = (drop i $ jlToList jl)
-                    in lhs `shouldBe` rhs
+      let t = \jl i -> let lhs = (jlToList $ dropJ i jl)
+                           rhs = (drop i $ jlToList jl)
+                       in lhs `shouldBe` rhs
 --                    in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
-      t (-1)
-      t 0
-      t 1
-      t 2
-      t 3
-      t 4
+      t jl1 (-1)
+      t jl1 0
+      t jl1 1
+      t jl1 2
+      t jl1 3
+      t jl1 4
