@@ -28,6 +28,8 @@ spec = do
                  (Single (Size 1) "ea"))
                (Single (Size 1) "h")
 
+  let jl2 = Single (Size 1) "hello"
+
   describe "JoinList" $ do
     it "should handle empty" $ do
       (Empty :: EditorList) `shouldBe` Empty
@@ -41,31 +43,37 @@ spec = do
       let t = \jl i -> let lhs = (indexJ i jl)
                            rhs = (jlToList jl !!? i)
                        in lhs `shouldBe` rhs
---                    in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
+--                       in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
 
       t jl1 0
       t jl1 1
       t jl1 2
       t jl1 3
       t jl1 4
+
+      t jl2 0
+      t jl2 1
 
     it "should support dropping" $ do
       let t = \jl i -> let lhs = (jlToList $ dropJ i jl)
                            rhs = (drop i $ jlToList jl)
                        in lhs `shouldBe` rhs
---                    in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
+--                       in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
       t jl1 (-1)
       t jl1 0
       t jl1 1
       t jl1 2
       t jl1 3
       t jl1 4
+
+      t jl2 0
+      t jl2 1
 
     it "should support taking" $ do
       let t = \jl i -> let lhs = (jlToList $ takeJ i jl)
                            rhs = (take i $ jlToList jl)
                        in lhs `shouldBe` rhs
---                    in trace (show (i, lhs, rhs)) lhs `shouldBe` rhs
+--                       in trace (show (i, lhs, rhs)) lhs `shouldBe` rhs
 
       t jl1 (-1)
       t jl1 0
@@ -73,3 +81,6 @@ spec = do
       t jl1 2
       t jl1 3
       t jl1 4
+
+      t jl2 0
+      t jl2 1
