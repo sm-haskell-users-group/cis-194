@@ -41,6 +41,7 @@ spec = do
       let t = \jl i -> let lhs = (indexJ i jl)
                            rhs = (jlToList jl !!? i)
                        in lhs `shouldBe` rhs
+--                    in (trace (show (i, lhs, rhs)) lhs `shouldBe` rhs)
 
       t jl1 0
       t jl1 1
