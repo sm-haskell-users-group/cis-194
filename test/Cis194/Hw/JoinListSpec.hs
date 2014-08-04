@@ -59,3 +59,16 @@ spec = do
       t jl1 2
       t jl1 3
       t jl1 4
+
+    it "should support taking" $ do
+      let t = \jl i -> let lhs = (jlToList $ takeJ i jl)
+                           rhs = (take i $ jlToList jl)
+                       in lhs `shouldBe` rhs
+--                    in trace (show (i, lhs, rhs)) lhs `shouldBe` rhs
+
+      t jl1 (-1)
+      t jl1 0
+      t jl1 1
+      t jl1 2
+      t jl1 3
+      t jl1 4

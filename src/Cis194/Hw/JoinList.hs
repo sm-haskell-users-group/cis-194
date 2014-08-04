@@ -44,3 +44,16 @@ dropJ i (Append _ l r)
                   in Append (mappend (tag newL) (tag r)) newL r
     | otherwise = dropJ (i - ls) r
     where ls = getSize $ size $ tag l
+
+takeJ :: (Sized b, Monoid b, Show b, Show a) => Int -> JoinList b a -> JoinList b a
+takeJ i jl
+    | i <= 0 = Empty
+    | i >= s = jl
+    where s = getSize $ size $ tag jl
+takeJ _ Empty = Empty
+takeJ _ s@(Single _ _) = s
+takeJ i jl@(Append _ l r)
+    | i < ls    = takeJ i l
+    | otherwise = let newR = takeJ (i - ls) r
+                  in Append (mappend (tag l) (tag newR)) l newR
+    where ls = getSize $ size $ tag l
