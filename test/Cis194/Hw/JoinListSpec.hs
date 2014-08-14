@@ -5,6 +5,7 @@ import Cis194.Hw.Calc
 import Cis194.Hw.ExprT
 import Cis194.Hw.JoinList
 import Sized
+import Scrabble
 
 import Data.Monoid
 import Debug.Trace
@@ -84,3 +85,12 @@ spec = do
 
       t jl2 0
       t jl2 1
+
+    it "should play Scrabble" $ do
+      let scr2 = Append (Score 23)
+                   (Single (Score 9) "yay ")
+                   (Single (Score 14) "haskell!")
+
+      let t1 = scoreLine "yay " +++ scoreLine "haskell!"
+
+      t1 `shouldBe` scr2
