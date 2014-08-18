@@ -18,3 +18,7 @@ spec = do
   describe "fibs1" $ do
     it "should define an infinite list of all Fibonacci numbers" $ do
       take 5 fibs1 `shouldBe` [0, 1, 1, 2, 3]
+
+  describe "fibs2" $ do
+    it "should define an infinite list of all Fibonacci numbers" $ do
+      take 5 fibs2 `shouldBe` [0, 1, 1, 2, 3]

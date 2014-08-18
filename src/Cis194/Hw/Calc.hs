@@ -1,19 +1,19 @@
+{-# LANGUAGE  FlexibleInstances #-}
 module Cis194.Hw.Calc where
 
 import  Cis194.Hw.ExprT
 import  Cis194.Hw.Parser
+import  qualified Cis194.Hw.VarExprT as VarExprT
+import  qualified Data.Map as M
+--import  Cis194.Hw.StackVM
 
 newtype MinMax = MinMax Integer deriving (Eq, Show)
 newtype Mod7 = Mod7 Integer deriving (Eq, Show)
 
 eval :: ExprT -> Integer
 eval (Lit x) = x
-eval (Add (Lit a) (Lit b)) = a + b
-eval (Add (Lit a) b) = eval (Add (Lit a) (Lit (eval b)))
-eval (Add a (Lit b)) = eval (Add (Lit (eval a)) (Lit b))
-eval (Mul (Lit a) (Lit b)) = a * b
-eval (Mul (Lit a) b) = eval (Mul (Lit a) (Lit (eval b)))
-eval (Mul a (Lit b)) = eval (Mul (Lit (eval a)) (Lit b))
+eval (Add a b) = (eval a) + (eval b)
+eval (Mul a b) = (eval a) * (eval b)
 
 evalStr :: String -> Maybe Integer
 evalStr x =
@@ -50,3 +50,40 @@ instance Expr Bool where
   lit a = (a > 0)
   add a b = a || b
   mul a b = a && b
+
+instance Expr String where
+  lit a = show a
+  add a b = concat a b
+
+class HasVars a where
+  var :: String -> a
+
+--VarExprT instance methods
+instance Expr VarExprT.VarExprT where
+  lit a = VarExprT.Lit a
+  add a b = VarExprT.Add a b
+  mul a b = VarExprT.Mul a b
+
+instance HasVars VarExprT.VarExprT where
+  var a = VarExprT.Var a
+
+--M.Map instance methods
+instance Expr (M.Map String Integer -> Maybe Integer) where
+  lit a = (\_ -> Just a)
+  add a b = \x -> case (a x) of
+    Nothing -> Nothing
+    Just y -> case (b x) of
+      Nothing -> Nothing
+      Just z -> Just (y + z)
+  mul a b = \x -> case (a x) of
+    Nothing -> Nothing
+    Just y -> case (b x) of
+      Nothing -> Nothing
+      Just z -> Just (y * z)
+
+instance HasVars (M.Map String Integer -> Maybe Integer) where
+  var a = M.lookup a
+
+withVars :: [(String, Integer)] -> (M.Map String Integer -> Maybe Integer) -> Maybe Integer
+withVars vs exp = exp $ M.fromList vs
+
