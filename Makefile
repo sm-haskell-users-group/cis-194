@@ -18,3 +18,6 @@ week6:
 
 week7:
 	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/JoinListSpec.hs
+
+week8:
+	runhaskell -isrc:src/Cis194/Hw test/Cis194/Hw/PartySpec.hs
