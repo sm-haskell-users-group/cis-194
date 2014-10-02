@@ -47,3 +47,11 @@ make week1
 ```
 cabal configure --enable-tests && cabal build && cabal test
 ```
+
+## Branching Strategy
+
+Branch `master` will contain tests and stubbed homework assignments only; please create a topic branch for yourself to which you'll commit your homework solutions.
+
+## Miscellaneous Links
+
+1. [Imperative debugging of Haskell code](https://gist.github.com/laser/3a37ffbfd73ec21ba399)
