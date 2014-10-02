@@ -4,20 +4,23 @@ module Cis194.Hw.Week1 where
 -- Ex 1-4  --
 -------------
 
-toDigits :: Integer -> [Integer]
-toDigits x = [x]
+lastDigit :: Integer -> Integer
+lastDigit _ = undefined
 
-toDigitsRev :: Integer -> [Integer]
-toDigitsRev x = [x]
+dropLastDigit :: Integer -> Integer
+dropLastDigit _ = undefined
+
+toDigits :: Integer -> [Integer]
+toDigits _ = undefined
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = xs
+doubleEveryOther _ = undefined
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = 0
+sumDigits _ = undefined
 
 validate :: Integer -> Bool
-validate _ = False
+validate _ = undefined
 
 ---------------------
 -- Towers of Hanoi --
@@ -27,7 +30,7 @@ type Peg = String
 type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
-hanoi _ _ _ _ = []
+hanoi _ _ _ _ = undefined
 
 hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
-hanoi4 _ _ _ _ _ = []
+hanoi4 _ _ _ _ _ = undefined
