@@ -2,7 +2,7 @@
 
 Homework solutions for UPenn's CIS 194:
 
-http://www.seas.upenn.edu/~cis194/spring13/index.html
+[http://www.seas.upenn.edu/~cis194/](http://www.seas.upenn.edu/~cis194/)
 
 ## Installation
 
