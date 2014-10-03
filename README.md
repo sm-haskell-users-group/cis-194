@@ -13,7 +13,7 @@ On a mac:
     echo 'export PATH=$HOME/Library/Haskell/bin:$PATH' >> ~/.bashrc
 
     # Install haskell-platform
-    brew install haskell-platform
+    brew install ghc cabal-install
 
     # Clone repo
     git clone https://github.com/sm-haskell-users-group/cis-194 cis194
