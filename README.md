@@ -54,4 +54,5 @@ Branch `master` will contain tests and stubbed homework assignments only; please
 
 ## Miscellaneous Links
 
+1. [Basic GHCI commands](https://gist.github.com/laser/789b4416a0aa55bafd72)
 1. [Imperative debugging of Haskell code](https://gist.github.com/laser/3a37ffbfd73ec21ba399)
