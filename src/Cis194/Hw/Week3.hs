@@ -25,3 +25,6 @@ localMaxima (x:xs) =
         else localMaxima xs
 
 {- part3 -}
+
+histogram :: [Integer] -> String
+histogram = foldr (\ x xs -> (histoAccu x x)
