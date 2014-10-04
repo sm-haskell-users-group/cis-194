@@ -48,9 +48,21 @@ make week1
 cabal configure --enable-tests && cabal build && cabal test
 ```
 
-## Branching Strategy
+## Where to Put Your Work
 
 Branch `master` will contain tests and stubbed homework assignments only; please create a topic branch for yourself to which you'll commit your homework solutions.
+
+Example:
+
+```sh
+~/dev/sm-cis194 $ git checkout -b erin
+Switched to a new branch 'erin'
+
+~/dev/sm-cis194 $ touch .foo
+~/dev/sm-cis194 $ git add .
+~/dev/sm-cis194 $ git commit -m "adding foo"
+~/dev/sm-cis194 $ git push origin erin
+```
 
 ## Miscellaneous Links
 
