@@ -22,6 +22,13 @@ spec = do
         [ "eh","el","ell","he","hell","hello","helo"
         , "ho","hoe","hole","lo","oe","oh","ole" ]
 
+  describe "converge" $ do
+    it "merges a template and target word" $ do
+      converge "??r?" "care" `shouldBe` "cae"
+      converge "???e" "care" `shouldBe` "car"
+      converge "c??"  "care" `shouldBe` "ar!"
+      converge "c???" "car"  `shouldBe` "ar!"
+
   describe "wordFitsTemplate" $ do
     it "checks to see if a word matches a template, given a set of tiles" $ do
       wordFitsTemplate "??r?" ['c','x','e','a','b','c','l'] "care" `shouldBe` True
