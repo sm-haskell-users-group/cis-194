@@ -42,3 +42,7 @@ spec = do
 
     it "should return False for invalid card number" $ do
       validate 4012888888881882 `shouldBe` False
+
+  describe "hanoi" $ do
+    it "should return a list of moves required to move the stack from the first peg to the second" $ do
+      hanoi 2 "a" "b" "c" `shouldBe` [("a","c"), ("a","b"), ("c","b")]

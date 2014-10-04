@@ -31,6 +31,3 @@ type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 hanoi _ _ _ _ = undefined
-
-hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
-hanoi4 _ _ _ _ _ = undefined
