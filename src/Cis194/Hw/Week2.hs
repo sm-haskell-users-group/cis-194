@@ -1,7 +1,8 @@
 module Cis194.Hw.Week2 where
 
-import Words
+import Cis194.Hw.Words
 import Data.List
+import Data.Char
 
 -- Though a Scrabble hand is the same Haskell type as a Scrabble word, they
 -- have different properties. Specifically, a hand is unordered whereas a word
@@ -27,22 +28,37 @@ type STemplate = Template
 
 -- Write your code below:
 formableBy :: String -> Hand -> Bool
-formableBy _ _ = False
+formableBy [] _ = True
+formableBy (c:cs) h = (c `elem` h) && formableBy cs (delete c h)
 
 wordsFrom :: Hand -> [String]
 wordsFrom hand = filter (`formableBy` hand) allWords
 
 wordFitsTemplate :: Template -> Hand -> String -> Bool
+wordFitsTemplate [] _ [] = True
+wordFitsTemplate ('?':xs) h (y:ys) = y `elem` h && wordFitsTemplate xs (delete y h) ys
+wordFitsTemplate (x:xs) h (y:ys) = x == y && wordFitsTemplate xs h ys
 wordFitsTemplate _ _ _ = False
 
 wordsFittingTemplate :: Template -> Hand -> [String]
-wordsFittingTemplate _ _ = []
+wordsFittingTemplate t h = filter (wordFitsTemplate t h) allWords
 
 scrabbleValueWord :: String -> Int
-scrabbleValueWord _ = 0
+scrabbleValueWord = sum . map scrabbleValue
 
 bestWords :: [String] -> [String]
-bestWords _ = []
+bestWords = bestWords' []
+  where bestWords' b [] = b
+        bestWords' [] (w:ws) = bestWords' [w] ws
+        bestWords' bs (w:ws) | valw > valb = bestWords' [w] ws
+                             | valw == valb = bestWords' (w:bs) ws
+                             | otherwise = bestWords' bs ws
+          where valw = scrabbleValueWord w
+                valb = scrabbleValueWord $ head bs
 
 scrabbleValueTemplate :: STemplate -> String -> Int
-scrabbleValueTemplate _ _ = 0
+scrabbleValueTemplate t s = n * sum (zipWith tilePlaceValue t s)
+  where tilePlaceValue 'D' c = 2 * scrabbleValue c
+        tilePlaceValue 'T' c = 3 * scrabbleValue c
+        tilePlaceValue _ c = scrabbleValue c
+        n = product $ map digitToInt $ filter (\c -> c == '2' || c == '3') t

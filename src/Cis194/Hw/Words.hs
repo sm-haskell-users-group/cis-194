@@ -4,7 +4,7 @@
 -- To use, say `import Words` after your module header line and then
 -- access the list of words named `allWords`.
 
-module Words where
+module Cis194.Hw.Words where
 
 scrabbleValue :: Char -> Int
 scrabbleValue 'a' = 1
