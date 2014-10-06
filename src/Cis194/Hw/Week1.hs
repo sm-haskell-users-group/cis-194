@@ -88,8 +88,8 @@ fsx fs x = map (\f -> f x) fs
 drawLn :: Hanoi -> String
 drawLn (t1, t2, t3) = "\n  " ++ (¶) [t1, t2, t3] "\n" where
   (¶) ts = flip (foldr (¶)) ts where
+    width  = sum $ ts >>= fgx sum length
     (¶) t = (((pad t) . (draw t)) . ("•    " ++)) where
-      width  = sum $ ts >>= fsx [sum, length]
       pad t  = (++) (replicate (width - sum t - length t) ' ')
       draw t = (++) (t >>= \i -> replicate i '◊' ++ " ")
 
