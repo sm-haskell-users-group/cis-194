@@ -5,22 +5,29 @@ module Cis194.Hw.Week1 where
 -------------
 
 lastDigit :: Integer -> Integer
-lastDigit _ = undefined
+lastDigit n = n `mod` 10
 
 dropLastDigit :: Integer -> Integer
-dropLastDigit _ = undefined
+dropLastDigit n = n `div` 10
 
 toDigits :: Integer -> [Integer]
-toDigits _ = undefined
+toDigits n
+    | n > 0     = toDigits (dropLastDigit n) ++ [lastDigit n]
+    | otherwise = []
+
+doubleSecond :: [Integer] -> [Integer]
+doubleSecond []         = []
+doubleSecond (x:[])     = [x]
+doubleSecond (x:(y:zs)) = x : (2 * y) : doubleSecond zs
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther _ = undefined
+doubleEveryOther lst = reverse (doubleSecond (reverse lst))
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = undefined
+sumDigits lst = sum (concatMap toDigits lst)
 
 validate :: Integer -> Bool
-validate _ = undefined
+validate n = sumDigits (doubleEveryOther (toDigits n)) `mod` 10 == 0
 
 ---------------------
 -- Towers of Hanoi --
@@ -30,7 +37,13 @@ type Peg = String
 type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
-hanoi _ _ _ _ = undefined
+hanoi numDiscs a b c
+    | numDiscs == 0 = []
+    | numDiscs == 1 = [(a, b)]
+    | otherwise     = (hanoi (numDiscs - 1) a c b) ++ [(a, b)] ++ (hanoi (numDiscs - 1) c b a)
 
 hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
-hanoi4 _ _ _ _ _ = undefined
+hanoi4 numDiscs a b c d
+    | numDiscs == 0 = []
+    | numDiscs == 1 = [(a, b)]
+    | otherwise     = undefined
