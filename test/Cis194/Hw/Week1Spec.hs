@@ -42,3 +42,16 @@ spec = do
 
     it "should return False for invalid card number" $ do
       validate 4012888888881882 `shouldBe` False
+
+  describe "hanoi" $ do
+    it "should return an empty list of moves if no disks" $ do
+      hanoi 0 "a" "b" "c" `shouldBe` []
+
+    it "should return a single move to go from first to second peg if only one disk" $ do
+      hanoi 1 "a" "b" "c" `shouldBe` [("a", "b")]
+
+    it "should return a list of moves required to take all 2 disks from peg a to c using b as the intermediate" $ do
+      hanoi 2 "a" "c" "b" `shouldBe` [("a","b"), ("a","c"), ("b","c")]
+
+    it "should return a list of moves required to take all 3 disks from peg a to c using b as the intermediate" $ do
+      hanoi 3 "a" "c" "b" `shouldBe` [("a","c"), ("a","b"), ("c","b"), ("a","c"), ("b","a"), ("b","c"), ("a","c")]
