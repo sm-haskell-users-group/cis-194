@@ -22,7 +22,7 @@ toDigits' ccNum = if (ccNum <= 0) then [] else (ƒ ccNum []) where
 
 doubleEveryOther :: [Integer] -> [Integer]
 -- double every second digit beginning from the right!
-doubleEveryOther ns = if null ns then [] else ƒ (reverse ns) [] where
+doubleEveryOther ns = ƒ (reverse ns) [] where
   ƒ (n:(d:ns')) ß = ƒ ns' (d + d : n : ß) -- ns was [..,d,n]
   ƒ       ns'   ß =   ns' ++ ß
 
@@ -77,18 +77,26 @@ move (t1, t2, t3) m = ƒ m where
 
 towers :: [Hanoi] -> [Move] -> [Hanoi]
 towers ts [] = reverse ts
-towers ts (m:ms) = let t' = move (head ts) m in towers (t':ts) ms
+towers ts (m:ms) = towers (t:ts) ms where t = move (head ts) m
+
+fgx :: (a -> b) -> (a -> b) -> a -> [b]
+fgx f g x = [f x, g x]
+
+fsx :: [(a -> b)] -> a -> [b]
+fsx fs x = map (\f -> f x) fs
 
 drawLn :: Hanoi -> String
-drawLn (t1, t2, t3) =
-  "\n  " ++ draw t1 ++ "•    " ++ draw t2 ++ "•    " ++ draw t3 ++ "•\n" where
-    width = (sum $ map (\t -> sum t + length t) [t1, t2, t3])
-    pad t = replicate (width - sum t - length t) ' '
-    draw t = (pad t) ++ (t >>= \i -> replicate i '◊' ++ " ")
+drawLn (t1, t2, t3) = "\n  " ++ (¶) [t1, t2, t3] "\n" where
+  (¶) ts = flip (foldr (¶)) ts where
+    (¶) t = (((pad t) . (draw t)) . ("•    " ++)) where
+      width  = sum $ ts >>= fsx [sum, length]
+      pad t  = (++) (replicate (width - sum t - length t) ' ')
+      draw t = (++) (t >>= \i -> replicate i '◊' ++ " ")
 
 towersN :: Integer -> [Hanoi]
 towersN n = towers [build (fromIntegral n)] (hanoid n)
 
 test n = putStrLn $ towersN n >>= drawLn
+
 tests = putStrLn $ [0..4] >>=
   \i -> ((show i ++ " ––––") ++) . (>>= drawLn) . towersN $ i
