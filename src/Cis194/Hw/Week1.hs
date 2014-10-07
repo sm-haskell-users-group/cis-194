@@ -10,33 +10,26 @@ lastDigit = flip rem 10
 dropLastDigit :: Integer -> Integer
 dropLastDigit = flip div 10
 
-toDigits :: Integer -> [Integer]
--- (n <= 0) = []
-toDigits = ƒ [] where
-  ƒ ß n | (1 > n) = ß
-  ƒ ß n = ƒ (lastDigit n : ß) (dropLastDigit n)
+toDigits :: Integer -> [Integer] -- 0 or negative = []
+toDigits = ƒ [] where ƒ ß n |  (1 > n)  = ß
+                            | otherwise = ƒ (d:ß) q where (q, d) = quotRem n 10
 
 toDigits' ccNum = if (ccNum <= 0) then [] else (ƒ ccNum []) where
   ƒ 0 ß = ß -- a leading kind of zero!
   ƒ n ß = ƒ (dropLastDigit n) (lastDigit n : ß) -- 123 ß = 12 3:ß
 
-doubleEveryOther :: [Integer] -> [Integer]
--- double every second digit beginning from the right!
-doubleEveryOther ns = ƒ (reverse ns) [] where
-  ƒ (n:(d:ns')) ß = ƒ ns' (d + d : n : ß) -- ns was [..,d,n]
-  ƒ       ns'   ß =   ns' ++ ß
-
-  ƒ' (n:_) ß = n : ß
-  ƒ' [   ] ß = ß
+doubleEveryOther :: [Integer] -> [Integer] -- second last first!
+doubleEveryOther = flip ƒ [] . reverse where
+  ƒ (n:(d:ns)) ß = ƒ ns (d + d : n : ß) -- was [..,d,n]
+  ƒ       ns   ß = ns ++ ß
 
 sumDigits :: [Integer] -> Integer
-sumDigits ns = sum $ ns >>= toDigits
-
-sumDigits' = foldr ((+) . (sum . toDigits)) 0
-sumDigits'' = sum . map (sum . toDigits)
+sumDigits = sum . (>>= toDigits)
 
 validate :: Integer -> Bool
-validate ccNum = rem (checksum ccNum) 10 == 0 where
+validate = (0 ==) . lastDigit . sumDigits . doubleEveryOther . toDigits
+
+validate' ccNum = rem (checksum ccNum) 10 == 0 where
   checksum = sumDigits . doubleEveryOther . toDigits
 
 ---------------------
@@ -54,6 +47,10 @@ hanoi 1 ab ad _ = [(ab, ad)] -- optional optimization?
 hanoi n ab ad tmp = let n' = n - 1 in
   (hanoi n' ab tmp ad) ++ (ab, ad) : (hanoi n' tmp ad ab)
 
+hanoi' n ab ad tmp |     1 > n = []
+                   |    1 == n = [(ab, ad)] -- optional optimization?
+                   | otherwise = let n' = n - 1 in
+                       (hanoi n' ab tmp ad) ++ (ab, ad) : (hanoi n' tmp ad ab)
 
 {--- extras ---}
 
@@ -61,40 +58,37 @@ hanoid d = hanoi d "a" "b" "c"
 
 type Hanoi = ([Int], [Int], [Int]) -- a game state (3 towers)
 
-build :: Int -> Hanoi
-build n = ([1..n], [], [])
+build :: Integer -> Hanoi; build n = ([1..(fromIntegral n)], [], [])
 
 move :: Hanoi -> Move -> Hanoi
 move (t1, t2, t3) m = ƒ m where
-  get tx = tail tx
-  put tx ty = head tx : ty
-  ƒ ("a", "b") = (   get t1, put t1 t2,        t3)
-  ƒ ("a", "c") = (   get t1,        t2, put t1 t3)
+  get = tail
+  put t = (head t :)
   ƒ ("b", "a") = (put t2 t1,    get t2,        t3)
-  ƒ ("b", "c") = (       t1,    get t2, put t2 t3)
   ƒ ("c", "a") = (put t3 t1,        t2,    get t3)
+  ƒ ("a", "b") = (   get t1, put t1 t2,        t3)
   ƒ ("c", "b") = (       t1, put t3 t2,    get t3)
+  ƒ ("a", "c") = (   get t1,        t2, put t1 t3)
+  ƒ ("b", "c") = (       t1,    get t2, put t2 t3)
 
 towers :: [Hanoi] -> [Move] -> [Hanoi]
 towers ts [] = reverse ts
 towers ts (m:ms) = towers (t:ts) ms where t = move (head ts) m
 
+-- is this in Prelude?
 fgx :: (a -> b) -> (a -> b) -> a -> [b]
 fgx f g x = [f x, g x]
-
-fsx :: [(a -> b)] -> a -> [b]
-fsx fs x = map (\f -> f x) fs
 
 drawLn :: Hanoi -> String
 drawLn (t1, t2, t3) = "\n  " ++ (¶) [t1, t2, t3] "\n" where
   (¶) ts = flip (foldr (¶)) ts where
-    width  = sum $ ts >>= fgx sum length
-    (¶) t = (((pad t) . (draw t)) . ("•    " ++)) where
-      pad t  = (++) (replicate (width - sum t - length t) ' ')
+    width = sum $ ts >>= fgx sum length
+    (¶) t = (pad t) . (draw t) . ("•    " ++) where
+      pad  t = (++) (replicate (width - sum t - length t) ' ')
       draw t = (++) (t >>= \i -> replicate i '◊' ++ " ")
 
 towersN :: Integer -> [Hanoi]
-towersN n = towers [build (fromIntegral n)] (hanoid n)
+towersN n = towers [build n] (hanoid n)
 
 test n = putStrLn $ towersN n >>= drawLn
 
