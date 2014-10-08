@@ -1,5 +1,3 @@
--- Mine --
---
 module Cis194.Hw.Week1 where
 
 -------------
@@ -7,22 +5,23 @@ module Cis194.Hw.Week1 where
 -------------
 
 lastDigit :: Integer -> Integer
-lastDigit _ = undefined
+lastDigit x = x `mod` 10
 
 dropLastDigit :: Integer -> Integer
-dropLastDigit _ = undefined
+dropLastDigit x = x `div` 10
 
 toDigits :: Integer -> [Integer]
-toDigits _ = undefined
+toDigits x | x <= 0 = []
+toDigits x = toDigits (dropLastDigit x) ++ [lastDigit x]
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther _ = undefined
+doubleEveryOther x = reverse [fst y * snd y | y <- (zip (reverse x) (take (length x) (cycle[1,2])))]
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = undefined
+sumDigits x = sum [ sum y | y <- [toDigits (dropLastDigit z) ++ [lastDigit z] | z <- x]]
 
 validate :: Integer -> Bool
-validate _ = undefined
+validate x = (sumDigits (doubleEveryOther (toDigits x)) `mod` 10) == 0
 
 ---------------------
 -- Towers of Hanoi --
