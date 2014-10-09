@@ -15,7 +15,7 @@ toDigits 0 = []
 toDigits x = (toDigits (dropLastDigit x)) ++ [lastDigit x]
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther xs = foldl (\acc (a,b) -> acc ++ [if a then b*2 else b]) [] (zip [i| j <- [1..], i <- [False,True]] xs)
+doubleEveryOther xs = foldl (\acc (a,b) -> acc ++ [if a then b*2 else b]) [] (zip [i| _ <- [1..], i <- [False,True]] xs)
 
 sumDigits :: [Integer] -> Integer
 sumDigits xs = foldr (\x acc -> acc + if x < 10 then x else (sum . toDigits) x) 0 xs
