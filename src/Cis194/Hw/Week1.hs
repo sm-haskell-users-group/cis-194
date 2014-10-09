@@ -4,6 +4,8 @@ module Cis194.Hw.Week1 where
 -- Ex 1-4  --
 -------------
 
+-- quest to avoid explicit parameters
+
 lastDigit :: Integer -> Integer
 lastDigit = flip rem 10
 
@@ -14,14 +16,14 @@ toDigits :: Integer -> [Integer] -- 0 or negative = []
 toDigits = ƒ [] where ƒ ß n |  (1 > n)  = ß
                             | otherwise = ƒ (d:ß) q where (q, d) = quotRem n 10
 
-toDigits' ccNum = if (ccNum <= 0) then [] else (ƒ ccNum []) where
-  ƒ 0 ß = ß -- a leading kind of zero!
-  ƒ n ß = ƒ (dropLastDigit n) (lastDigit n : ß) -- 123 ß = 12 3:ß
+toDigits' ccNum = if (ccNum <= 0) then [] else (ƒ [] ccNum) where
+  ƒ ß 0 = ß -- a leading kind of zero!
+  ƒ ß n = ƒ (lastDigit n : ß) (dropLastDigit n) -- ß 123 = 3:ß 12
 
 doubleEveryOther :: [Integer] -> [Integer] -- second last first!
-doubleEveryOther = flip ƒ [] . reverse where
-  ƒ (n:(d:ns)) ß = ƒ ns (d + d : n : ß) -- was [..,d,n]
-  ƒ       ns   ß = ns ++ ß
+doubleEveryOther = ƒ [] . reverse where
+  ƒ ß (n:(d:ns)) = ƒ (d + d : n : ß) ns -- was [..,d,n]
+  ƒ ß       ns   = ns ++ ß
 
 sumDigits :: [Integer] -> Integer
 sumDigits = sum . (>>= toDigits)
@@ -41,24 +43,29 @@ type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 -- move n discs from the first peg to the second
-{- hanoi 2 "a" "b" "c" = [("a","c"), ("a","b"), ("c","b")] -}
-hanoi n _ _ _ | 1 > n = []
-hanoi 1 ab ad _ = [(ab, ad)] -- optional optimization?
-hanoi n ab ad tmp = let n' = n - 1 in
-  (hanoi n' ab tmp ad) ++ (ab, ad) : (hanoi n' tmp ad ab)
+hanoi n _ _ _ | 1 > n = [] -- check n <= 0 only once!
+hanoi n a b c         = ƒ n a b c
+  where
+    ƒ 1 a b _ =               [ (a, b) ]
+    ƒ n a b c = (ƒ n' a c b) ++ (a, b) : (ƒ n' c b a) where n' = pred n
 
 hanoi' n ab ad tmp |     1 > n = []
                    |    1 == n = [(ab, ad)] -- optional optimization?
                    | otherwise = let n' = n - 1 in
-                       (hanoi n' ab tmp ad) ++ (ab, ad) : (hanoi n' tmp ad ab)
+                       (hanoi' n' ab tmp ad) ++ (ab, ad) : (hanoi' n' tmp ad ab)
+
+hanoi'' n _ _ _ | 1 > n = []
+hanoi'' 1 ab ad _ = [(ab, ad)] -- optional optimization?
+hanoi'' n ab ad tmp = let n' = n - 1 in
+  (hanoi'' n' ab tmp ad) ++ (ab, ad) : (hanoi'' n' tmp ad ab)
 
 {--- extras ---}
 
-hanoid d = hanoi d "a" "b" "c"
+hanoid = \d -> hanoi d "a" "b" "c"
 
 type Hanoi = ([Int], [Int], [Int]) -- a game state (3 towers)
 
-build :: Integer -> Hanoi; build n = ([1..(fromIntegral n)], [], [])
+build n = ([1..fromIntegral n], [], [])
 
 move :: Hanoi -> Move -> Hanoi
 move (t1, t2, t3) m = ƒ m where
@@ -71,26 +78,22 @@ move (t1, t2, t3) m = ƒ m where
   ƒ ("a", "c") = (   get t1,        t2, put t1 t3)
   ƒ ("b", "c") = (       t1,    get t2, put t2 t3)
 
-towers :: [Hanoi] -> [Move] -> [Hanoi]
-towers ts [] = reverse ts
-towers ts (m:ms) = towers (t:ts) ms where t = move (head ts) m
+hanois :: Integer -> [Hanoi]
+hanois n = scanl move (build n) (hanoid n)
 
 -- is this in Prelude?
 fgx :: (a -> b) -> (a -> b) -> a -> [b]
 fgx f g x = [f x, g x]
 
 drawLn :: Hanoi -> String
-drawLn (t1, t2, t3) = "\n  " ++ (¶) [t1, t2, t3] "\n" where
+drawLn (t1, t2, t3) = '\n' : (¶) [t1, t2, t3] "\n" where
   (¶) ts = flip (foldr (¶)) ts where
-    width = sum $ ts >>= fgx sum length
-    (¶) t = (pad t) . (draw t) . ("•    " ++) where
+    width = 3 + sum (ts >>= fgx sum length)
+    (¶) t = (pad t) . (draw t) . ("•" ++) where
       pad  t = (++) (replicate (width - sum t - length t) ' ')
       draw t = (++) (t >>= \i -> replicate i '◊' ++ " ")
 
-towersN :: Integer -> [Hanoi]
-towersN n = towers [build n] (hanoid n)
-
-test n = putStrLn $ towersN n >>= drawLn
+test n = putStrLn (hanois n >>= drawLn)
 
 tests = putStrLn $ [0..4] >>=
-  \i -> ((show i ++ " ––––") ++) . (>>= drawLn) . towersN $ i
+  \n -> '\n' : show n ++ " ––––" ++ (hanois n >>= drawLn)

@@ -55,7 +55,9 @@ wordsFittingTemplate t h = filter (wordFitsTemplate t h) allWords
 scrabbleValueWord :: String -> Int
 scrabbleValueWord word = sum (map scrabbleValue word)
 
-better :: (Int, [String]) -> String -> (Int, [String])
+type Score = Int -- letter(s) score
+
+better :: (Score, [String]) -> String -> (Score, [String])
 better (best, words) word | (score > best)  = (score, [word])
                           | (score == best) = (best, word : words) -- order matters!
                           | otherwise       = (best, words)
@@ -64,14 +66,16 @@ better (best, words) word | (score > best)  = (score, [word])
 bestWords :: [String] -> [String]
 bestWords words = snd (foldl better (0, []) words)
 
+tFactors :: [(Char, (Int, Int))]
+tFactors = [('2', (2, 1)), ('3', (3, 1)), ('D', (1, 2)), ('T', (1, 3))]
+
+factoredScore :: Char -> Score -> (Int, Score)
+factoredScore t score = ƒ (lookup t tFactors) where
+  ƒ  Nothing                      = (     1,                score)
+  ƒ (Just (factor, letterFactor)) = (factor, letterFactor * score)
+
 -- "De?2?" "peace" == 24
 scrabbleValueTemplate :: STemplate -> String -> Int
-scrabbleValueTemplate st word =
-  let (mult, score) = foldl gather (1, 0) (zip st word) in (mult * score) where
-    gather (mult, score) (t, c) | (t == '?') = (mult,     score + value)
-                                | (t == '2') = (mult * 2, score + value)
-                                | (t == '3') = (mult * 3, score + value)
-                                | (t == 'D') = (mult,     score + value * 2)
-                                | (t == 'T') = (mult,     score + value * 3)
-                                | otherwise  = (mult,     score + value)
-                                where value = scrabbleValue c
+scrabbleValueTemplate st word = uncurry (*) $ foldl ƒ (1, 0) (zip st word) where
+  ƒ :: (Int, Score) -> (Char, Char) -> (Int, Score)
+  ƒ (f, s) (t, c) = (f * f', s + s') where (f', s') = factoredScore t (scrabbleValue c)
