@@ -28,3 +28,4 @@ localMaxima (x:xs) =
 
 histogram :: [Integer] -> String
 histogram = foldr (\ x xs -> (histoAccu x x)
+
