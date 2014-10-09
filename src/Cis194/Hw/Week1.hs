@@ -19,6 +19,8 @@ doubleEveryOther x = reverse [fst y * snd y | y <- (zip (reverse x) (take (lengt
 
 sumDigits :: [Integer] -> Integer
 sumDigits x = sum [ sum y | y <- [toDigits (dropLastDigit z) ++ [lastDigit z] | z <- x]]
+--sumDigits x = sum [ concat [toDigits (dropLastDigit z) ++ [lastDigit z] | z <- x]]
+--sumDigits x = foldr (+) 0 [ concat [toDigits (dropLastDigit z) ++ [lastDigit z] | z <- x]]
 
 validate :: Integer -> Bool
 validate x = (sumDigits (doubleEveryOther (toDigits x)) `mod` 10) == 0
