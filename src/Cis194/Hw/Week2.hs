@@ -26,23 +26,52 @@ type Template = String
 type STemplate = Template
 
 -- Write your code below:
+
+-- type Word = String (or [Char]) ?!?
+-- should these be newtype?
+
 formableBy :: String -> Hand -> Bool
-formableBy _ _ = False
+formableBy [] _ = True
+formableBy (c:s) h | elem c h = formableBy s (delete c h) | True = False
 
 wordsFrom :: Hand -> [String]
-wordsFrom hand = filter (`formableBy` hand) allWords
+wordsFrom hand = filter (flip formableBy hand) allWords
+
+-- wild '?' equality
+match :: Template -> String -> Bool
+match [] [] = True
+match (t:ts) (c:s) | ('?' == t || t == c) = match ts s
+match _ _ = False -- Note: tests obscure pattern mismatches
 
 wordFitsTemplate :: Template -> Hand -> String -> Bool
-wordFitsTemplate _ _ _ = False
+wordFitsTemplate template hand word
+    -- does Haskell know this filter is loop invariant?
+    | match template word = formableBy word (filter (/= '?') template ++ hand)
+    | otherwise           = False
 
 wordsFittingTemplate :: Template -> Hand -> [String]
-wordsFittingTemplate _ _ = []
+wordsFittingTemplate t h = filter (wordFitsTemplate t h) allWords
 
 scrabbleValueWord :: String -> Int
-scrabbleValueWord _ = 0
+scrabbleValueWord word = sum (map scrabbleValue word)
+
+better :: (Int, [String]) -> String -> (Int, [String])
+better (best, words) word | (score > best)  = (score, [word])
+                          | (score == best) = (best, word : words) -- order matters!
+                          | otherwise       = (best, words)
+                          where score = scrabbleValueWord word
 
 bestWords :: [String] -> [String]
-bestWords _ = []
+bestWords words = snd (foldl better (0, []) words)
 
+-- "De?2?" "peace" == 24
 scrabbleValueTemplate :: STemplate -> String -> Int
-scrabbleValueTemplate _ _ = 0
+scrabbleValueTemplate st word =
+  let (mult, score) = foldl gather (1, 0) (zip st word) in (mult * score) where
+    gather (mult, score) (t, c) | (t == '?') = (mult,     score + value)
+                                | (t == '2') = (mult * 2, score + value)
+                                | (t == '3') = (mult * 3, score + value)
+                                | (t == 'D') = (mult,     score + value * 2)
+                                | (t == 'T') = (mult,     score + value * 3)
+                                | otherwise  = (mult,     score + value)
+                                where value = scrabbleValue c
