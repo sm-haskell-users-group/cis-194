@@ -15,7 +15,7 @@ toDigits x | x <= 0 = []
 toDigits x = toDigits (dropLastDigit x) ++ [lastDigit x]
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther x = reverse [fst y * snd y | y <- (zip (reverse x) (take (length x) (cycle[1,2])))]
+doubleEveryOther x = reverse [fst y * snd y | y <- (zip (reverse x) (cycle[1,2]))]
 
 sumDigits :: [Integer] -> Integer
 sumDigits x = sum [ sum y | y <- [toDigits (dropLastDigit z) ++ [lastDigit z] | z <- x]]
@@ -33,4 +33,6 @@ type Peg = String
 type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
-hanoi _ _ _ _ = undefined
+--hanoi _ _ _ _ = undefined
+hanoi 0 a b c = []
+hanoi x a b c = hanoi (x-1) a c b ++ [(a, b)] ++ hanoi (x-1) c b a
