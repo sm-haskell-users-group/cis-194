@@ -31,8 +31,10 @@ type STemplate = Template
 -- should these be newtype?
 
 formableBy :: String -> Hand -> Bool
-formableBy [] _ = True
-formableBy (c:s) h | elem c h = formableBy s (delete c h) | True = False
+formableBy [] _     = True
+formableBy (c:cs) h = elem c h && formableBy cs (delete c h)
+
+formableBy' (c:s) h | elem c h = formableBy' s (delete c h) | True = False
 
 wordsFrom :: Hand -> [String]
 wordsFrom hand = filter (flip formableBy hand) allWords
@@ -40,11 +42,13 @@ wordsFrom hand = filter (flip formableBy hand) allWords
 -- wild '?' equality
 match :: Template -> String -> Bool
 match [] [] = True
-match (t:ts) (c:s) | ('?' == t || t == c) = match ts s
-match _ _ = False -- Note: tests obscure pattern mismatches
+match (t:ts) (c:cs) = ('?' == t || t == c) && match ts cs
+match _ _ = False
 
 wordFitsTemplate :: Template -> Hand -> String -> Bool
-wordFitsTemplate template hand word
+wordFitsTemplate t h w = match t w && formableBy w (filter (/= '?') t ++ h)
+
+wordFitsTemplate' template hand word
     -- does Haskell know this filter is loop invariant?
     | match template word = formableBy word (filter (/= '?') template ++ hand)
     | otherwise           = False
@@ -53,12 +57,14 @@ wordsFittingTemplate :: Template -> Hand -> [String]
 wordsFittingTemplate t h = filter (wordFitsTemplate t h) allWords
 
 scrabbleValueWord :: String -> Int
-scrabbleValueWord word = sum (map scrabbleValue word)
+scrabbleValueWord = sum . map scrabbleValue
+
+scrabbleValueWord' word = sum (map scrabbleValue word)
 
 type Score = Int -- letter(s) score
 
 better :: (Score, [String]) -> String -> (Score, [String])
-better (best, words) word | (score > best)  = (score, [word])
+better (best, words) word | (score >  best) = (score, [word])
                           | (score == best) = (best, word : words) -- order matters!
                           | otherwise       = (best, words)
                           where score = scrabbleValueWord word
@@ -67,12 +73,13 @@ bestWords :: [String] -> [String]
 bestWords words = snd (foldl better (0, []) words)
 
 tFactors :: [(Char, (Int, Int))]
-tFactors = [('2', (2, 1)), ('3', (3, 1)), ('D', (1, 2)), ('T', (1, 3))]
+tFactors = zip ['2',    '3',       'D',    'T']
+               [(2, 1), (3, 1), (1, 2), (1, 3)]
 
 factoredScore :: Char -> Score -> (Int, Score)
-factoredScore t score = ƒ (lookup t tFactors) where
-  ƒ  Nothing                      = (     1,                score)
-  ƒ (Just (factor, letterFactor)) = (factor, letterFactor * score)
+factoredScore t score = case (lookup t tFactors) of
+  Nothing                       -> (1,                     score)
+  (Just (factor, letterFactor)) -> (factor, letterFactor * score)
 
 -- "De?2?" "peace" == 24
 scrabbleValueTemplate :: STemplate -> String -> Int
