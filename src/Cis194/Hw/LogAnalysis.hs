@@ -7,7 +7,7 @@ import Data.List
 --ex 1
 
 parseMessage :: String -> MaybeLogMessage
-parseMessage s = parseMessage' $ words s
+parseMessage = parseMessage' . words
 
 parseMessage' :: [String] -> MaybeLogMessage
 parseMessage' lm@("E":err:sev:ws)
@@ -46,6 +46,8 @@ compareMsgs (LogMessage _ ts1 _) (LogMessage _ ts2 _) = compare ts1 ts2
 sortMessages :: [LogMessage] -> [LogMessage]
 sortMessages = sortBy compareMsgs
 
+-- Alternatively, we could make LogMessage an instance of Ord
+
 --ex 6
 
 whatWentWrong :: [LogMessage] -> [String]
@@ -66,7 +68,8 @@ messagesAbout :: String -> [LogMessage] -> [LogMessage]
 messagesAbout s = filter (messageAbout s)
 
 messageAbout :: String -> LogMessage -> Bool
-messageAbout s (LogMessage _ _ m) = map toUpper s `isInfixOf` map toUpper m
+messageAbout s (LogMessage _ _ m) = toUpperStr s `isInfixOf` toUpperStr m
+  where toUpperStr = map toUpper
 
 --ex 8
 
