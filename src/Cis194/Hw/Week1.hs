@@ -14,7 +14,10 @@ toDigits :: Integer -> [Integer]
 toDigits = reverse . (map lastDigit) . takeWhile (> 0) . (iterate dropLastDigit)
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther _ = undefined
+doubleEveryOther = snd . iter
+  where iter [] = (0, [])
+        iter (x:xs) = (1 - times, (x * (times + 1)) : r)
+          where (times, r) = iter xs
 
 sumDigits :: [Integer] -> Integer
 sumDigits _ = undefined
