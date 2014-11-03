@@ -33,4 +33,5 @@ type Peg = String
 type Move = (Peg, Peg)
 
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
-hanoi _ _ _ _ = undefined
+hanoi 0 _ _ _ = []
+hanoi discs from to swap = hanoi (discs - 1) from swap to ++ (from, to) : hanoi (discs - 1) swap to from
