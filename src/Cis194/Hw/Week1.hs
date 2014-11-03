@@ -5,10 +5,10 @@ module Cis194.Hw.Week1 where
 -------------
 
 lastDigit :: Integer -> Integer
-lastDigit _ = undefined
+lastDigit = flip mod 10
 
 dropLastDigit :: Integer -> Integer
-dropLastDigit _ = undefined
+dropLastDigit = flip div 10
 
 toDigits :: Integer -> [Integer]
 toDigits _ = undefined
