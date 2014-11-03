@@ -11,7 +11,7 @@ dropLastDigit :: Integer -> Integer
 dropLastDigit = flip div 10
 
 toDigits :: Integer -> [Integer]
-toDigits _ = undefined
+toDigits = reverse . (map lastDigit) . takeWhile (> 0) . (iterate dropLastDigit)
 
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther _ = undefined
