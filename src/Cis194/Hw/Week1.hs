@@ -20,7 +20,7 @@ doubleEveryOther = snd . iter
           where (times, r) = iter xs
 
 sumDigits :: [Integer] -> Integer
-sumDigits _ = undefined
+sumDigits = sum . (concatMap toDigits)
 
 validate :: Integer -> Bool
 validate _ = undefined
