@@ -23,7 +23,7 @@ sumDigits :: [Integer] -> Integer
 sumDigits = sum . (concatMap toDigits)
 
 validate :: Integer -> Bool
-validate _ = undefined
+validate = (== 0) . (flip mod 10) . sumDigits . doubleEveryOther . toDigits
 
 ---------------------
 -- Towers of Hanoi --
