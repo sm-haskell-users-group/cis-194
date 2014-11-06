@@ -9,6 +9,7 @@ import Data.Maybe
 
 ex1 :: a -> b -> b
 ex1 _ x = x
+--ex1 = curry snd
 
 -- This is the only possible implementation of this type as written - if we knew
 -- that b was an instance of some type class, we could do more.
@@ -17,11 +18,13 @@ ex1 _ x = x
 
 ex2 :: a -> a -> a
 ex2 x _ = x
+--ex2 = curry fst
 
 -- or
 
 ex2' :: a -> a -> a
 ex2' _ x = x
+--ex2' = curry snd
 
 -- Once again, we don't know what operations a supports, so we can only return
 -- either the first or second argument. Note that ex2' is the same as ex1.
@@ -30,6 +33,7 @@ ex2' _ x = x
 
 ex3 :: Int -> a -> a
 ex3 _ x = x
+--ex3 = curry snd
 
 -- We must return an a, and we have one: we don't know what we can do to it, so
 -- we must just return it plain. (This is also the same as ex1.)
