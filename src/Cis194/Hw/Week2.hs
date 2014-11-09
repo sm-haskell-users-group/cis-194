@@ -27,7 +27,13 @@ type STemplate = Template
 
 -- Write your code below:
 formableBy :: String -> Hand -> Bool
-formableBy _ _ = False
+formableBy word hand = func (sort word) (sort hand)
+  where func "" _ = True
+        func _ [] = False
+        func (x:xs) (y:ys) =
+          if x == y then func xs ys
+          else if x > y then func (x:xs) ys
+          else False
 
 -- Came implemented already
 wordsFrom :: Hand -> [String]
