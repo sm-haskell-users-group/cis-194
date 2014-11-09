@@ -1,6 +1,6 @@
 module Cis194.Hw.Week2 where
 
-import Words
+import Cis194.Hw.Words
 import Data.List
 
 -- Though a Scrabble hand is the same Haskell type as a Scrabble word, they
