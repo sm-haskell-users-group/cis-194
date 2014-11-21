@@ -52,7 +52,7 @@ wordFitsTemplate tpl hand word = if length tpl /= length word then False else wo
         func (l1, l2) mh = if l1 == l2 then mh else Nothing
 
 wordsFittingTemplate :: Template -> Hand -> [String]
-wordsFittingTemplate _ _ = []
+wordsFittingTemplate tpl hand = filter (wordFitsTemplate tpl hand) allWords
 
 scrabbleValueWord :: String -> Int
 scrabbleValueWord _ = 0
