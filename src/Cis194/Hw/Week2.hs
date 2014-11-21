@@ -54,8 +54,9 @@ wordFitsTemplate tpl hand word = if length tpl /= length word then False else wo
 wordsFittingTemplate :: Template -> Hand -> [String]
 wordsFittingTemplate tpl hand = filter (wordFitsTemplate tpl hand) allWords
 
+-- I love it when functions come together like this.
 scrabbleValueWord :: String -> Int
-scrabbleValueWord _ = 0
+scrabbleValueWord = foldr ((+) . scrabbleValue) 0
 
 bestWords :: [String] -> [String]
 bestWords _ = []
