@@ -29,6 +29,7 @@ type STemplate = Template
 formableBy :: String -> Hand -> Bool
 formableBy _ _ = False
 
+-- Came implemented already
 wordsFrom :: Hand -> [String]
 wordsFrom hand = filter (`formableBy` hand) allWords
 
