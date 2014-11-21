@@ -2,6 +2,7 @@ module Cis194.Hw.Week2 where
 
 import Cis194.Hw.Words
 import Data.List
+import Data.Maybe (isJust)
 
 -- Though a Scrabble hand is the same Haskell type as a Scrabble word, they
 -- have different properties. Specifically, a hand is unordered whereas a word
@@ -39,8 +40,16 @@ formableBy word hand = func (sort word) (sort hand)
 wordsFrom :: Hand -> [String]
 wordsFrom hand = filter (`formableBy` hand) allWords
 
+-- I liked this one. Using `Maybe Hand` to represent success or failure seemed
+-- reasonable, even in real-world scenarios; if all you have left is
+-- `Just hand`, you can safely assume the word was successfully filled,
+-- just place the word and don't even worry about the characters you dropped
+-- on the floor.
 wordFitsTemplate :: Template -> Hand -> String -> Bool
-wordFitsTemplate _ _ _ = False
+wordFitsTemplate tpl hand word = if length tpl /= length word then False else work
+  where work = isJust $ foldr func (Just hand) (zip tpl word)
+        func ('?', l) mh = mh >>= (\h -> (findIndex (== l) h) >>= (\i -> Just $ (take i h) ++ (drop (i + 1) h)))
+        func (l1, l2) mh = if l1 == l2 then mh else Nothing
 
 wordsFittingTemplate :: Template -> Hand -> [String]
 wordsFittingTemplate _ _ = []
