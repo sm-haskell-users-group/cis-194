@@ -83,3 +83,12 @@ scrabbleValueTemplate tpl word = foldr id score mults
         acc ('2', wc) (s, fns) = (s +     scrabbleValue wc, (*2) : fns)
         acc ('3', wc) (s, fns) = (s +     scrabbleValue wc, (*3) : fns)
         acc (_,   wc) (s, fns) = (s +     scrabbleValue wc,        fns)
+
+-- Due to the fact that I walk word twice, (once for length, once for processing)
+-- this was a really easy change to make. A more efficient version would handle
+-- during active processing.
+wordFitsTemplate' :: Template -> Hand -> String -> Bool
+wordFitsTemplate' tpl hand word = if length tpl < length word then False else work
+  where work = isJust $ foldr func (Just hand) (zip tpl word)
+        func ('?', l) mh = mh >>= (\h -> (findIndex (== l) h) >>= (\i -> Just $ (take i h) ++ (drop (i + 1) h)))
+        func (l1, l2) mh = if l1 == l2 then mh else Nothing

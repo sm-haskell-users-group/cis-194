@@ -50,3 +50,12 @@ spec = do
       scrabbleValueTemplate "?e??3" "peace" `shouldBe` 27
       scrabbleValueTemplate "De?2?" "peace" `shouldBe` 24
       scrabbleValueTemplate "??Tce" "peace" `shouldBe` 11
+
+-- Extra Credit
+  describe "wordFitsTemplate'" $ do
+    it "checks to see if a word matches an arbitrarily-lengthed template, given a set of tiles" $ do
+      wordFitsTemplate' "??r???" ['c','x','e','a','b','c','l'] "care" `shouldBe` True
+      wordFitsTemplate' "??r"    ['c','x','e','a','b','c','l'] "care" `shouldBe` False
+      wordFitsTemplate' "??r?"   ['c','x','e','w','b','c','l'] "care" `shouldBe` False
+      wordFitsTemplate' "??r?"   ['c','x','e','a','b','c','l'] "car" `shouldBe` True
+      wordFitsTemplate' "let"    ['x','x'] "let" `shouldBe` True
