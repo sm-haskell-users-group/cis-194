@@ -58,8 +58,15 @@ wordsFittingTemplate tpl hand = filter (wordFitsTemplate tpl hand) allWords
 scrabbleValueWord :: String -> Int
 scrabbleValueWord = foldr ((+) . scrabbleValue) 0
 
+-- Have to reverse this due to prepending instead of using `filter`. The
+-- filter solution didn't really jump out at me, I need to give it more thought.
 bestWords :: [String] -> [String]
-bestWords _ = []
+bestWords = reverse . snd . foldr acc (0, [])
+  where acc w (val, xs)
+          | nextVal  > val = (nextVal, [w])
+          | nextVal == val = (val, w : xs)
+          | otherwise      = (val, xs)
+            where nextVal = scrabbleValueWord w
 
 scrabbleValueTemplate :: STemplate -> String -> Int
 scrabbleValueTemplate _ _ = 0
