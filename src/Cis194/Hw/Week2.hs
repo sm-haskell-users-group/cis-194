@@ -68,5 +68,18 @@ bestWords = reverse . snd . foldr acc (0, [])
           | otherwise      = (val, xs)
             where nextVal = scrabbleValueWord w
 
+-- It seemed so easy to pattern match on the multiplier character in this
+-- way. I suspect there's a more elegant pattern, although probably not
+-- without features in Haskell I don't know about yet.
+--
+-- Favorite part of this: `foldr id score mults`. I could have combined it
+-- with the rest of the driving functions, but it was just too cool to obscure.
 scrabbleValueTemplate :: STemplate -> String -> Int
-scrabbleValueTemplate _ _ = 0
+scrabbleValueTemplate tpl word = foldr id score mults
+  where (score, mults) = (foldr acc (0, [])) $ zip tpl word
+        acc :: (Char, Char) -> (Int, [Int -> Int]) -> (Int, [Int -> Int])
+        acc ('D', wc) (s, fns) = (s + 2 * scrabbleValue wc,        fns)
+        acc ('T', wc) (s, fns) = (s + 3 * scrabbleValue wc,        fns)
+        acc ('2', wc) (s, fns) = (s +     scrabbleValue wc, (*2) : fns)
+        acc ('3', wc) (s, fns) = (s +     scrabbleValue wc, (*3) : fns)
+        acc (_,   wc) (s, fns) = (s +     scrabbleValue wc,        fns)
