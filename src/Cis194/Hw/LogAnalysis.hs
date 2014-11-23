@@ -13,7 +13,9 @@ parseMessage = work . words
           work xs = InvalidLM $ unwords xs
 
 validMessagesOnly :: [MaybeLogMessage] -> [LogMessage]
-validMessagesOnly _ = undefined
+validMessagesOnly lm = foldr accValid [] lm
+    where accValid (ValidLM x) a = x : a
+          accValid (InvalidLM _) a = a
 
 parse :: String -> [LogMessage]
 parse _ = undefined
