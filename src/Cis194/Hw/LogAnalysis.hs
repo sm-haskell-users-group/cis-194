@@ -27,8 +27,13 @@ compareMsgs (LogMessage _ l _) (LogMessage _ r _) = compare l r
 sortMessages :: [LogMessage] -> [LogMessage]
 sortMessages = sortBy compareMsgs
 
+extractMessage :: LogMessage -> String
+extractMessage (LogMessage _ _ msg) = msg
+
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong _ = undefined
+whatWentWrong = (fmap extractMessage) . (filter $ testSeverity 50) . sortMessages
+    where testSeverity lvl (LogMessage (Error lvl') _ _) = lvl' >= lvl
+          testSeverity _ _ = False
 
 messagesAbout :: String -> [LogMessage] -> [LogMessage]
 messagesAbout _ _ = undefined
