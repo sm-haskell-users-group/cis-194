@@ -2,6 +2,7 @@ module Cis194.Hw.LogAnalysis where
 
 import Cis194.Hw.Log
 import Data.List (sortBy)
+import Data.Char (toLower)
 
 -- My initial solution was much more verbose, including:
 --   readInt' ts' >>= (\ts -> readInt' lvl' >>= \lvl -> Just (ts, lvl)
@@ -53,7 +54,8 @@ isSubstr s = isSubstr' s
           isSubstr' xs (_:str) = isSubstr' xs str
 
 messagesAbout :: String -> [LogMessage] -> [LogMessage]
-messagesAbout _ _ = undefined
+messagesAbout s = filter ((isSubstr $ lc s) . lc . extractMessage)
+    where lc = fmap toLower
 
 whatWentWrongEnhanced :: String -> [LogMessage] -> [String]
 whatWentWrongEnhanced _ _ = undefined

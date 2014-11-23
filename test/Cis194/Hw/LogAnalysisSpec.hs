@@ -87,6 +87,7 @@ spec = do
       let v4 = LogMessage (Error 80) 3 "baz"
 
       messagesAbout "foo" [v1, v2, v3, v4] `shouldBe` [v1, v3]
+      messagesAbout "blah" [LogMessage Info 1 "balaaaha"] `shouldBe` []
 
   describe "isSubstr" $ do
     it "should detect substrings" $ do
