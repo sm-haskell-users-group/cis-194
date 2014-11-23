@@ -21,7 +21,7 @@ parse :: String -> [LogMessage]
 parse s = validMessagesOnly $ fmap parseMessage $ lines s
 
 compareMsgs :: LogMessage -> LogMessage -> Ordering
-compareMsgs _ _ = undefined
+compareMsgs (LogMessage _ l _) (LogMessage _ r _) = compare l r
 
 sortMessages :: [LogMessage] -> [LogMessage]
 sortMessages _ = undefined
