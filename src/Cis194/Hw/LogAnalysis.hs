@@ -18,7 +18,7 @@ validMessagesOnly lm = foldr accValid [] lm
           accValid (InvalidLM _) a = a
 
 parse :: String -> [LogMessage]
-parse _ = undefined
+parse s = validMessagesOnly $ fmap parseMessage $ lines s
 
 compareMsgs :: LogMessage -> LogMessage -> Ordering
 compareMsgs _ _ = undefined
