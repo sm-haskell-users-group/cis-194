@@ -63,7 +63,7 @@ messagesAbout :: String -> [LogMessage] -> [LogMessage]
 messagesAbout s = filter (messageContains s)
 
 whatWentWrongEnhanced :: String -> [LogMessage] -> [String]
-whatWentWrongEnhanced _ _ = undefined
+whatWentWrongEnhanced s = (fmap extractMessage) . (filter $ (messageContains s) ||| (testSeverity 50)) . sortMessages
 
 -- You get kudos if you can manage to use the following function:
 (|||) :: (LogMessage -> Bool) -> (LogMessage -> Bool) -> LogMessage -> Bool
