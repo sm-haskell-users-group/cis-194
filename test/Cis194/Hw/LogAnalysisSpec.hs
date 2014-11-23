@@ -88,6 +88,19 @@ spec = do
 
       messagesAbout "foo" [v1, v2, v3, v4] `shouldBe` [v1, v3]
 
+  describe "isSubstr" $ do
+    it "should detect substrings" $ do
+      isSubstr "abc" "aaaabcccccc" `shouldBe` True
+
+    it "should return False on no match" $ do
+      isSubstr "blah" "foo" `shouldBe` False
+
+    it "should reset after false matches" $ do
+      isSubstr "abc" "a1b1c" `shouldBe` False
+
+    it "should fail if matching against a shorter string" $ do
+      isSubstr "abc" "ab" `shouldBe` False
+
   describe "whatWentWrongEnhanced" $ do
     it "should show high severity logs /and/ lines that match a string" $ do
       let v1 = LogMessage Info 1 "blah"

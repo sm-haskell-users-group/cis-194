@@ -35,6 +35,23 @@ whatWentWrong = (fmap extractMessage) . (filter $ testSeverity 50) . sortMessage
     where testSeverity lvl (LogMessage (Error lvl') _ _) = lvl' >= lvl
           testSeverity _ _ = False
 
+-- No promises on performance here. I wonder if it would make sense to walk the
+-- whole string, accumulating partial matches in a list, then succeed-fast when
+-- any of them completes?
+-- Thinking of something like isSubstr "aab" "aaaaab" that would produce:
+--   ["a"], ["aa", "a"], ["aa", "a"], ["aa", "a"], ["aa", "a"], ["aab"]
+-- Every partial would be checked at every iteration, so this would only be
+-- good for very small partial matches
+isSubstr :: String -> String -> Bool
+isSubstr s = isSubstr' s
+    where isSubstr' [] _ = True
+          isSubstr' _ [] = False
+          isSubstr' (x:xs) (s':str) | x == s' = if isSubstr' xs str then True
+                                             else if (x:xs) == s then isSubstr' (x:xs) str
+                                             else False
+          isSubstr' xs _ | xs /= s = False
+          isSubstr' xs (_:str) = isSubstr' xs str
+
 messagesAbout :: String -> [LogMessage] -> [LogMessage]
 messagesAbout _ _ = undefined
 
