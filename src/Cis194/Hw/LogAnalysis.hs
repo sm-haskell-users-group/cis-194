@@ -1,6 +1,7 @@
 module Cis194.Hw.LogAnalysis where
 
 import Cis194.Hw.Log
+import Data.List (sortBy)
 
 -- My initial solution was much more verbose, including:
 --   readInt' ts' >>= (\ts -> readInt' lvl' >>= \lvl -> Just (ts, lvl)
@@ -24,7 +25,7 @@ compareMsgs :: LogMessage -> LogMessage -> Ordering
 compareMsgs (LogMessage _ l _) (LogMessage _ r _) = compare l r
 
 sortMessages :: [LogMessage] -> [LogMessage]
-sortMessages _ = undefined
+sortMessages = sortBy compareMsgs
 
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong _ = undefined
