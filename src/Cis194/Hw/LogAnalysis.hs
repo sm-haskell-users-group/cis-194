@@ -31,10 +31,12 @@ sortMessages = sortBy compareMsgs
 extractMessage :: LogMessage -> String
 extractMessage (LogMessage _ _ msg) = msg
 
+testSeverity :: Int -> LogMessage -> Bool
+testSeverity lvl (LogMessage (Error lvl') _ _) = lvl' >= lvl
+testSeverity _ _ = False
+
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong = (fmap extractMessage) . (filter $ testSeverity 50) . sortMessages
-    where testSeverity lvl (LogMessage (Error lvl') _ _) = lvl' >= lvl
-          testSeverity _ _ = False
 
 -- No promises on performance here. I wonder if it would make sense to walk the
 -- whole string, accumulating partial matches in a list, then succeed-fast when
@@ -53,9 +55,12 @@ isSubstr s = isSubstr' s
           isSubstr' xs _ | xs /= s = False
           isSubstr' xs (_:str) = isSubstr' xs str
 
-messagesAbout :: String -> [LogMessage] -> [LogMessage]
-messagesAbout s = filter ((isSubstr $ lc s) . lc . extractMessage)
+messageContains :: String -> LogMessage -> Bool
+messageContains s = (isSubstr $ lc s) . lc . extractMessage
     where lc = fmap toLower
+
+messagesAbout :: String -> [LogMessage] -> [LogMessage]
+messagesAbout s = filter (messageContains s)
 
 whatWentWrongEnhanced :: String -> [LogMessage] -> [String]
 whatWentWrongEnhanced _ _ = undefined
