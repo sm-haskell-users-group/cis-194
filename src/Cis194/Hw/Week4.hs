@@ -95,8 +95,12 @@ allCaps [] = True
 allCaps (x:xs) | isUpper (head x) = allCaps xs
 allCaps _ = False
 
+-- Pretty straightforward using foldr: If we're trying to prepend a space to
+-- empty string, just return empty string. Otherwise, prepend normally.
 dropTrailingWhitespace :: String -> String
-dropTrailingWhitespace _ = undefined
+dropTrailingWhitespace = foldr acc ""
+  where acc ' ' "" = ""
+        acc x   a  = x : a
 
 firstLetters :: [String] -> [Char]
 firstLetters _ = undefined
