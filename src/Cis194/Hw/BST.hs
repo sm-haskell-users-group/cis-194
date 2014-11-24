@@ -2,14 +2,11 @@
    Part of an implementation of a binary search tree.
 -}
 
-module BST where
-
-import Test.QuickCheck
-import Control.Applicative
+module Cis194.Hw.BST where
 
 data BST a = Leaf
            | Node (BST a) a (BST a)
-  deriving Show
+  deriving (Show, Eq)
 
 -- | Is the tree empty?
 isEmpty :: BST a -> Bool
@@ -42,27 +39,3 @@ isBST cmp = isBSTBetween cmp Nothing Nothing
 getElements :: BST a -> [a]
 getElements Leaf                = []
 getElements (Node left x right) = getElements left ++ x : getElements right
-
-
--- TESTING CODE. (Students aren't expected to understand this yet, but it
--- might be interesting to read, anyway!)
-
-instance Arbitrary a => Arbitrary (BST a) where
-  arbitrary = sized mk_tree
-
-mk_tree :: Arbitrary a => Int -> Gen (BST a)
-mk_tree 0 = return Leaf
-mk_tree n = frequency [ (1, return Leaf)
-                      , (2, Node <$> mk_tree (n `div` 2)
-                                 <*> arbitrary
-                                 <*> mk_tree (n `div` 2)) ]
-
-prop_ordered :: BST Int -> Bool
-prop_ordered x = isBST compare x == is_sorted (getElements x)
-  where
-    is_sorted []             = True
-    is_sorted [_]            = True
-    is_sorted (x1 : x2 : xs) = x1 <= x2 && is_sorted (x2 : xs)
-
-test :: IO ()
-test = quickCheck prop_ordered
