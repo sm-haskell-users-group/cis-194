@@ -15,8 +15,10 @@ ex2 :: a -> a -> a
 ex2 _ x = x
 -- ex2 x _ = x
 
+-- We have some info about the first parameter, but none about the second.
+-- As a result, we can't combine these types, and are forced to drop the first.
 ex3 :: Int -> a -> a
-ex3 _ _ = undefined
+ex3 _ x = x
 
 ex4 :: Bool -> a -> a -> a
 ex4 _ _ _ = undefined
