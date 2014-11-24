@@ -69,8 +69,10 @@ ex11 :: a -> Maybe a
 ex11 x = Just x
 -- ex11 _ = Nothing
 
+-- We've got two options here as well, dump the value or return it as-is
 ex12 :: Maybe a -> Maybe a
-ex12 _ = undefined
+ex12 _ = Nothing
+-- ex12 x = x
 
 insertBST :: (a -> a -> Ordering) -> a -> BST a -> BST a
 insertBST _ _ _ = undefined
