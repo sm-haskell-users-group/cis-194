@@ -59,8 +59,10 @@ ex9 :: (a -> b) -> [a] -> [b]
 ex9 f xs = foldr (\x a -> f x : a) [] xs
 -- ex9 _ _ = []
 
+-- We can't reason about the type or whether this is Just or Nothing, so this
+-- is impossible.
 ex10 :: Maybe a -> a
-ex10 _ = undefined
+ex10 _ = impossible
 
 ex11 :: a -> Maybe a
 ex11 _ = undefined
