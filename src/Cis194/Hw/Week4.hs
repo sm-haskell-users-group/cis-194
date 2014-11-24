@@ -5,8 +5,10 @@ import Cis194.Hw.BST
 impossible :: a
 impossible = undefined
 
+-- All we can do is return the second parameter
+-- AKA: snd
 ex1 :: a -> b -> b
-ex1 _ _ = undefined
+ex1 _ x = x
 
 ex2 :: a -> a -> a
 ex2 _ _ = undefined
