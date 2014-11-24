@@ -20,8 +20,10 @@ ex2 _ x = x
 ex3 :: Int -> a -> a
 ex3 _ x = x
 
+-- This is the first exercise where we have real flexibility of interface.
+-- I chose to implement a Bool-influenced fst/snd kind of function
 ex4 :: Bool -> a -> a -> a
-ex4 _ _ _ = undefined
+ex4 b x y = if b then x else y
 
 ex5 :: Bool -> Bool
 ex5 _ = undefined
