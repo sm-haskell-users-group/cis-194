@@ -108,5 +108,11 @@ firstLetters [] = []
 firstLetters ("":xs) = firstLetters xs
 firstLetters ((x:_):xs) = x : firstLetters xs
 
+-- This was fun to write. The one issue I had was representing not adding the
+-- final comma before the square bracket. Without a test, I was getting
+-- asList ["1","2","3","4"] == "[1,2,3,4,]"
 asList :: [String] -> String
-asList _ = undefined
+asList xs = '[' : (foldr acc "]" xs)
+  where acc :: String -> String -> String
+        acc y "]" = y ++ "]"
+        acc y ys  = y ++ (',' : ys)
