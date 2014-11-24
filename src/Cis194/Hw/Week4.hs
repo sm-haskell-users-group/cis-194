@@ -1,5 +1,7 @@
 module Cis194.Hw.Week4 where
 
+import Data.Char (isUpper)
+
 import Cis194.Hw.BST
 
 impossible :: a
@@ -85,8 +87,13 @@ insertBST cmp x bst@(Node l v r)
     where ord = cmp x v
           build = insertBST cmp x
 
+-- Thanks to flexible pattern guards, this is pretty straightforward.
+-- Define our success case, our recursive case, and everything else
+-- is false.
 allCaps :: [String] -> Bool
-allCaps _ = undefined
+allCaps [] = True
+allCaps (x:xs) | isUpper (head x) = allCaps xs
+allCaps _ = False
 
 dropTrailingWhitespace :: String -> String
 dropTrailingWhitespace _ = undefined
