@@ -25,8 +25,12 @@ ex3 _ x = x
 ex4 :: Bool -> a -> a -> a
 ex4 b x y = if b then x else y
 
+-- We have four options here: Static values, identity, or invert.
 ex5 :: Bool -> Bool
-ex5 _ = undefined
+ex5 _ = True
+-- ex5 _ = False
+-- ex5 b = b
+-- ex5 b = not b
 
 ex6 :: (a -> a) -> a
 ex6 _ = undefined
