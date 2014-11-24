@@ -74,8 +74,16 @@ ex12 :: Maybe a -> Maybe a
 ex12 _ = Nothing
 -- ex12 x = x
 
+-- I wonder if there's a way to use Ord more effectively than this?
+-- The definition of build here reduces a lot of repetition
 insertBST :: (a -> a -> Ordering) -> a -> BST a -> BST a
-insertBST _ _ _ = undefined
+insertBST _   x Leaf = Node Leaf x Leaf
+insertBST cmp x bst@(Node l v r)
+  | ord == LT = Node (build l) v r
+  | ord == GT = Node l v (build r)
+  | otherwise = bst
+    where ord = cmp x v
+          build = insertBST cmp x
 
 allCaps :: [String] -> Bool
 allCaps _ = undefined
