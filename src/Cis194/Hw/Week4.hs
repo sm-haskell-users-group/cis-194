@@ -32,8 +32,9 @@ ex5 _ = True
 -- ex5 b = b
 -- ex5 b = not b
 
+-- As we have no 'a's to start with, we can't do anything.
 ex6 :: (a -> a) -> a
-ex6 _ = undefined
+ex6 _ = impossible
 
 ex7 :: (a -> a) -> a -> a
 ex7 _ _ = undefined
