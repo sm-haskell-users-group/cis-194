@@ -36,8 +36,11 @@ ex5 _ = True
 ex6 :: (a -> a) -> a
 ex6 _ = impossible
 
+-- As opposed to ex6, now we've got an 'a'! We have two options:
+-- transform, or not.
 ex7 :: (a -> a) -> a -> a
-ex7 _ _ = undefined
+ex7 f x = f x
+-- ex7 _ x = x
 
 ex8 :: [a] -> [a]
 ex8 _ = undefined
