@@ -10,8 +10,10 @@ impossible = undefined
 ex1 :: a -> b -> b
 ex1 _ x = x
 
+-- We can return either argument, but we can't do anything else.
 ex2 :: a -> a -> a
-ex2 _ _ = undefined
+ex2 _ x = x
+-- ex2 x _ = x
 
 ex3 :: Int -> a -> a
 ex3 _ _ = undefined
