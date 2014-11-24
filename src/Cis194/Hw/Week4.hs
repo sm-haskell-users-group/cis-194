@@ -64,8 +64,10 @@ ex9 f xs = foldr (\x a -> f x : a) [] xs
 ex10 :: Maybe a -> a
 ex10 _ = impossible
 
+-- We have two options here, utilize 'a' or dump it.
 ex11 :: a -> Maybe a
-ex11 _ = undefined
+ex11 x = Just x
+-- ex11 _ = Nothing
 
 ex12 :: Maybe a -> Maybe a
 ex12 _ = undefined
