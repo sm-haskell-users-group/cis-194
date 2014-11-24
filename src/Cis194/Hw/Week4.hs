@@ -102,8 +102,11 @@ dropTrailingWhitespace = foldr acc ""
   where acc ' ' "" = ""
         acc x   a  = x : a
 
+-- Unpacking arguments is so easy!
 firstLetters :: [String] -> [Char]
-firstLetters _ = undefined
+firstLetters [] = []
+firstLetters ("":xs) = firstLetters xs
+firstLetters ((x:_):xs) = x : firstLetters xs
 
 asList :: [String] -> String
 asList _ = undefined
