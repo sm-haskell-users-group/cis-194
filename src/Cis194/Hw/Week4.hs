@@ -42,8 +42,15 @@ ex7 :: (a -> a) -> a -> a
 ex7 f x = f x
 -- ex7 _ x = x
 
+-- We have some flexibility here: Because we can't reason about the list, we
+-- can't get the head or tail or anything-- We can still return the unmodified
+-- list, we can reverse the list, and we can return an empty list.
+--
+-- Unfortunately, reverse only works on finite lists, so this is not complete.
 ex8 :: [a] -> [a]
-ex8 _ = undefined
+ex8 xs = foldl (\a x -> x : a) [] xs
+-- ex8 xs = xs
+-- ex8 _ = []
 
 ex9 :: (a -> b) -> [a] -> [b]
 ex9 _ _ = undefined
