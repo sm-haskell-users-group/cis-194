@@ -52,8 +52,12 @@ ex8 xs = foldl (\a x -> x : a) [] xs
 -- ex8 xs = xs
 -- ex8 _ = []
 
+-- This is our friend (f)map!
+-- Because we have to provide alternate implementations, let's just return [].
+-- AKA: fmap
 ex9 :: (a -> b) -> [a] -> [b]
-ex9 _ _ = undefined
+ex9 f xs = foldr (\x a -> f x : a) [] xs
+-- ex9 _ _ = []
 
 ex10 :: Maybe a -> a
 ex10 _ = undefined
