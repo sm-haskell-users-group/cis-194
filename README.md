@@ -68,3 +68,34 @@ Switched to a new branch 'erin'
 
 1. [Basic GHCI commands](https://gist.github.com/laser/789b4416a0aa55bafd72)
 1. [Imperative debugging of Haskell code](https://gist.github.com/laser/3a37ffbfd73ec21ba399)
+
+--------
+
+## CIS 194 Schedule ##
+
+date    | which homework due? | who is presenting? | what's the topic?    
+------- | ------------------- | ------------------ | -----------------
+WED, Nov. 26 | [Markets / monoids](http://www.seas.upenn.edu/~cis194/hw/06-monoid-io.pdf) | Erin | Lazy Evaluation
+THU, Dec. 4  | [Streams](http://www.seas.upenn.edu/~cis194/hw/07-laziness.pdf) | ??? | Monads or Functor + Applicative
+THU, Dec. 11 | N/A | N/A | N/A
+THU, Dec. 18 | ??? | ??? | ???
+THU, Dec. 25 | N/A | N/A | N/A
+FRI, Jan. 2  | ??? | ??? | ???
+
+## Remaining Lectures ##
+
+1. [Functor](http://www.seas.upenn.edu/~cis194/spring13/lectures/09-functors.html)
+2. Applicative Functor ([here](http://www.seas.upenn.edu/~cis194/spring13/lectures/10-applicative.html) and [here](http://www.seas.upenn.edu/~cis194/spring13/lectures/11-applicative2.html))
+3. Monads ()[here](http://www.seas.upenn.edu/~cis194/spring13/lectures/12-monads.html) and [here](http://www.seas.upenn.edu/~cis194/lectures/08-monads.html))
+4. [Quickcheck](http://www.seas.upenn.edu/~cis194/lectures/09-testing.html)
+5. [Template Haskell](http://www.seas.upenn.edu/~cis194/lectures/11-template-haskell.html)
+
+## Fun Topics ##
+
+1. Reader, Writer monads
+2. Concurrency Primitives
+3. Lens
+4. Foldable
+5. Traversable
+6. Phantom Types
+7. GADTs
