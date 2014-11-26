@@ -1,14 +1,14 @@
 -- Applicative parser for infix arithmetic expressions without any
 -- dependency on hackage. Builds an explicit representation of the
 -- syntax tree to fold over using client-supplied semantics.
-module Parser (parseRing) where
+module Cis194.Hw.Parser (parseRing) where
 import           Control.Applicative
 import           Control.Arrow
 import           Data.Char
-import           Data.List           (foldl')
-import           Data.Maybe
-import           Data.Monoid
-import           Ring
+import           Data.List ()
+import           Data.Maybe ()
+import           Data.Monoid ()
+import           Cis194.Hw.Ring
 
 -- Building block of a computation with some state of type @s@
 -- threaded through it, possibly resulting in a value of type @r@
@@ -73,8 +73,9 @@ parseAtom = eatSpace *> (parens parseExpr <|> parseLit)
 parseLit :: Parsable a => Parser a
 parseLit = State parse
 
+buildOp :: a -> Maybe (a -> a -> a, a) -> a
 buildOp x Nothing        = x
-buildOp x (Just (op, y)) = x `op` y
+buildOp x (Just (op', y)) = x `op'` y
 
 -- Parse one of our two supported operator symbols.
 op :: Ring a => Char -> Parser (a -> a -> a)

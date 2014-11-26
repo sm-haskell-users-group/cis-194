@@ -1,7 +1,7 @@
 -- Define a class of mathematical rings
 -- See also http://en.wikipedia.org/wiki/Ring_(mathematics)
 
-module Ring where
+module Cis194.Hw.Ring where
 
  -- You can optionally include a list of symbols after an import statement
  -- to say exactly what you're importing from the other module. This is sometimes
