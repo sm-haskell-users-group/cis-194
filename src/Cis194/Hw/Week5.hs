@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Cis194.Hw.Week5 where
 
 import Data.Maybe    ( listToMaybe )
@@ -55,3 +56,14 @@ instance Parsable Mat2x2 where
         [(y, ']' : ']' :       xs5)] <- reads xs4
         = Just (MkMat ((a,b),(x,y)), xs5)
   parse _ = Nothing
+
+instance Ring Bool where
+  addId = False
+  addInv = not
+  mulId = True
+
+  add = (||)
+  mul = (&&)
+
+instance Parsable Bool where
+  parse = listToMaybe . reads

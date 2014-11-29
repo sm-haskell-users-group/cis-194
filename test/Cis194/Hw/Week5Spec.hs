@@ -34,3 +34,12 @@ spec = do
   describe "Ring Mat2x2" $ do
     it "should be able to parse a basic structure" $ do
       parse "[[5,10],[2,12]]" `shouldBe` Just ((MkMat ((5,10),(2,12))), "")
+
+  describe "Ring Bool" $ do
+    it "should be able to parse boolean values" $ do
+      parse "True" `shouldBe` Just (True, "")
+      parse "False" `shouldBe` Just (False, "")
+
+    it "should be able to do boolean arithmetic" $ do
+      parseRing "True + True" `shouldBe` Just True
+      parseRing "True * False" `shouldBe` Just False
