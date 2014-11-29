@@ -48,3 +48,7 @@ spec = do
     it "should distribute multiplication over addition" $ do
       let ex1 = (Mul (Lit 3) (Add (Lit 5) (Lit 3))) :: RingExpr Integer
       distribute ex1 `shouldBe` (Add (Mul (Lit 3) (Lit 5)) (Mul (Lit 3) (Lit 3)))
+
+  describe "squashMulId" $ do
+    it "should squash multiplicative identity" $ do
+      squashMulId (Mul MulId (Lit 5)) `shouldBe` ((Lit 5) :: RingExpr Integer)

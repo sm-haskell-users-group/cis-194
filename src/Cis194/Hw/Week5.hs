@@ -73,3 +73,8 @@ distribute (AddInv x)        = AddInv $ distribute x
 distribute (Add x y)         = Add (distribute x) (distribute y)
 distribute (Mul x (Add a b)) = distribute $ Add (Mul x a) (Mul x b)
 distribute x                 = x
+
+squashMulId :: RingExpr a -> RingExpr a
+squashMulId (Mul MulId x) = squashMulId x
+squashMulId (Mul x MulId) = squashMulId x
+squashMulId x             = squashMulId x
