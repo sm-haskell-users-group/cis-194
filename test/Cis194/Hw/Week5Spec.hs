@@ -30,3 +30,7 @@ spec = do
 
     it "should deal with negatives" $ do
       parseRing "1 + (-2)" `shouldBe` Just (MkMod 4)
+
+  describe "Ring Mat2x2" $ do
+    it "should be able to parse a basic structure" $ do
+      parse "[[5,10],[2,12]]" `shouldBe` Just ((MkMat ((5,10),(2,12))), "")
