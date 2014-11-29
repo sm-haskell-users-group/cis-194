@@ -43,3 +43,8 @@ spec = do
     it "should be able to do boolean arithmetic" $ do
       parseRing "True + True" `shouldBe` Just True
       parseRing "True * False" `shouldBe` Just False
+
+  describe "distribute" $ do
+    it "should distribute multiplication over addition" $ do
+      let ex1 = (Mul (Lit 3) (Add (Lit 5) (Lit 3))) :: RingExpr Integer
+      distribute ex1 `shouldBe` (Add (Mul (Lit 3) (Lit 5)) (Mul (Lit 3) (Lit 3)))

@@ -67,3 +67,9 @@ instance Ring Bool where
 
 instance Parsable Bool where
   parse = listToMaybe . reads
+
+distribute :: RingExpr a -> RingExpr a
+distribute (AddInv x)        = AddInv $ distribute x
+distribute (Add x y)         = Add (distribute x) (distribute y)
+distribute (Mul x (Add a b)) = distribute $ Add (Mul x a) (Mul x b)
+distribute x                 = x
