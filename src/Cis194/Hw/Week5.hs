@@ -68,13 +68,21 @@ instance Ring Bool where
 instance Parsable Bool where
   parse = listToMaybe . reads
 
+walkExpr :: (RingExpr a -> RingExpr a) -> RingExpr a -> RingExpr a
+walkExpr op = work . op
+  where
+    work (AddInv x) = AddInv $ walkExpr op x
+    work (Add x y)  = Add (walkExpr op x) (walkExpr op y)
+    work (Mul x y)  = Mul (walkExpr op x) (walkExpr op y)
+    work x          = x
+
 distribute :: RingExpr a -> RingExpr a
-distribute (AddInv x)        = AddInv $ distribute x
-distribute (Add x y)         = Add (distribute x) (distribute y)
-distribute (Mul x (Add a b)) = distribute $ Add (Mul x a) (Mul x b)
-distribute x                 = x
+distribute = walkExpr op
+  where op (Mul x (Add a b)) = Add (Mul x a) (Mul x b)
+        op x = x
 
 squashMulId :: RingExpr a -> RingExpr a
-squashMulId (Mul MulId x) = squashMulId x
-squashMulId (Mul x MulId) = squashMulId x
-squashMulId x             = squashMulId x
+squashMulId = walkExpr op
+  where op (Mul MulId x) = walkExpr op x
+        op (Mul x MulId) = walkExpr op x
+        op x = x
