@@ -48,24 +48,10 @@ instance Ring Mat2x2 where
   add = matfold (+)
 
 instance Parsable Mat2x2 where
-  parse = fifth . fourth . third . second . first
-    where
-      first :: String -> Maybe (Integer, String)
-      first ('[' : '[' : xs) | [(a, xs')] <- (reads xs :: [(Integer, String)]) = Just (a, xs')
-      first _ = Nothing
-
-      second :: Maybe (Integer, String) -> Maybe ((Integer, Integer), String)
-      second (Just (a, ',': xs)) | [(b, xs')] <- (reads xs :: [(Integer, String)]) = Just ((a, b), xs')
-      second _ = Nothing
-
-      third :: Maybe ((Integer, Integer), String) -> Maybe ((Integer, Integer), Integer, String)
-      third (Just (ab, ']' : ',' : '[' : xs)) | [(x, xs')] <- (reads xs :: [(Integer, String)]) = Just (ab, x, xs')
-      third _ = Nothing
-
-      fourth :: Maybe ((Integer, Integer), Integer, String) -> Maybe ((Integer, Integer), (Integer, Integer), String)
-      fourth (Just (ab, x, ',' : xs)) | [(y, xs')] <- (reads xs :: [(Integer, String)]) = Just (ab, (x, y), xs')
-      fourth _ = Nothing
-
-      fifth :: Maybe ((Integer, Integer), (Integer, Integer), String) -> Maybe (Mat2x2, String)
-      fifth (Just (ab, xy, ']': ']' : xs)) = Just (MkMat (ab, xy), xs)
-      fifth _ = Nothing
+  parse  ('[' : '[' :          xs1) |
+        [(a, ',' :             xs2)] <- reads xs1,
+        [(b, ']' : ',' : '[' : xs3)] <- reads xs2,
+        [(x, ',' :             xs4)] <- reads xs3,
+        [(y, ']' : ']' :       xs5)] <- reads xs4
+        = Just (MkMat ((a,b),(x,y)), xs5)
+  parse _ = Nothing
