@@ -7,6 +7,7 @@ import Data.Aeson
 import Test.Hspec
 
 import qualified Data.ByteString.Lazy.Char8 as B
+import qualified Data.Vector as V
 
 main :: IO ()
 main = hspec spec
@@ -22,3 +23,11 @@ spec = do
       ynToBool (String "Y") `shouldBe` (Bool True)
       ynToBool (String "N") `shouldBe` (Bool False)
       ynToBool (String "other") `shouldBe` (String "other")
+
+    it "should parse data" $ do
+      dat <- B.readFile "data/markets.json"
+      let (Right (Array arr)) = parseData dat
+      V.length arr `shouldBe` 8144
+
+    it "should parse values that include \"Y\" and \"N\"" $ do
+      parseData "[\"Y\", \"N\", \"Y\", \"N\"]" `shouldBe` Right (Array $ V.fromList [Bool True, Bool False, Bool True, Bool False])
