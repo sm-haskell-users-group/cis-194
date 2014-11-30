@@ -81,3 +81,12 @@ spec = do
     it "should not find markets that don't exist" $ do
       mkts <- loadData
       (fmap fmid $ allFound "blahblahblah" mkts) `shouldBe` []
+
+  describe "numberFound" $ do
+    it "should count markets" $ do
+      mkts <- loadData
+      numberFound "Madison" mkts `shouldBe` 19
+
+    it "should return 0 for nonexistent markets" $ do
+      mkts <- loadData
+      numberFound "blahblahblah" mkts `shouldBe` 0

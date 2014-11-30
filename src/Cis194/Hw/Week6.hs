@@ -66,3 +66,6 @@ lastFound = compose2 (M.listToMaybe . reverse) (search (:[]))
 
 allFound :: Searcher [Market]
 allFound = search (:[])
+
+numberFound :: Searcher Int
+numberFound = compose2 length allFound
