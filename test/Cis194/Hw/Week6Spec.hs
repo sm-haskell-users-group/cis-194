@@ -36,3 +36,7 @@ spec = do
       dat <- B.readFile "data/markets.json"
       let (Right markets) = parseMarkets dat
       length markets `shouldBe` 8144
+
+    it "should load data directly" $ do
+      mkts <- loadData
+      length mkts `shouldBe` 8144

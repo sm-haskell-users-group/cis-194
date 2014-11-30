@@ -35,3 +35,8 @@ resultToEither (Success r) = Right r
 
 parseMarkets :: B.ByteString -> Either String [Market]
 parseMarkets bs = (parseData bs) >>= (resultToEither . fromJSON)
+
+loadData :: IO [Market]
+loadData = (B.readFile "data/markets.json") >>= (return . getOrFail . parseMarkets)
+    where getOrFail (Right s) = s
+          getOrFail (Left e) = fail e
