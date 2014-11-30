@@ -14,6 +14,10 @@ Library
   HS-Source-Dirs:       src
   GHC-Options:          -Wall
   Exposed-Modules:      Cis194.Hw.Week1
+                      , Cis194.Hw.Week2
+                      , Cis194.Hw.LogAnalysis
+                      , Cis194.Hw.Week4
+                      , Cis194.Hw.Week5
   Other-Modules:
   Build-Depends:        base >= 4 && < 5
                       , containers
