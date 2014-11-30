@@ -22,9 +22,54 @@ parseData = (fmap ynToBool) . eitherDecode
 data Market = Market { fmid :: Int
                      , marketname :: T.Text
                      , website :: T.Text
+                     , location :: T.Text
+                     , street :: T.Text
+                     , city :: T.Text
+                     , county :: T.Text
                      , state :: T.Text
+                     , zip :: T.Text
                      , x :: Double
                      , y :: Double
+
+                     , bakedgoods :: Bool
+                     , cheese :: Bool
+                     , eggs :: Bool
+                     , flowers :: Bool
+                     , herbs :: Bool
+                     , honey :: Bool
+                     , jams :: Bool
+                     , maple :: Bool
+                     , meat :: Bool
+                     , nuts :: Bool
+                     , poultry :: Bool
+                     , seafood :: Bool
+                     , vegetables :: Bool
+                     , wine :: Bool
+
+                     , crafts :: Bool
+                     , nursery :: Bool
+                     , plants :: Bool
+                     , soap :: Bool
+                     , trees :: Bool
+
+                     , prepared :: Bool
+
+                     , credit :: Bool
+                     , sfmnp :: Bool
+                     , snap :: Bool
+                     , wic :: Bool
+                     , wiccash :: Bool
+
+                     , season1date :: T.Text
+                     , season1time :: T.Text
+                     , season2date :: T.Text
+                     , season2time :: T.Text
+                     , season3date :: T.Text
+                     , season3time :: T.Text
+                     , season4date :: T.Text
+                     , season4time :: T.Text
+
+                     , updatetime :: T.Text
                      }
     deriving (Show, Generic)
 
