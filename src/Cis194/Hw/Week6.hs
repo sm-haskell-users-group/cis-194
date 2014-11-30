@@ -2,6 +2,7 @@
 module Cis194.Hw.Week6 where
 
 import Data.Aeson
+import Data.Monoid
 import GHC.Generics
 
 import qualified Data.ByteString.Lazy.Char8 as B
@@ -40,3 +41,11 @@ loadData :: IO [Market]
 loadData = (B.readFile "data/markets.json") >>= (return . getOrFail . parseMarkets)
     where getOrFail (Right s) = s
           getOrFail (Left e) = fail e
+
+data OrdList a = OrdList { getOrdList :: [a] }
+    deriving (Eq, Show)
+
+instance Ord a => Monoid (OrdList a) where
+  mempty = OrdList []
+  mappend (OrdList xs) (OrdList ys) = OrdList $ foldr insert xs ys
+    where insert x' a = filter (< x') a ++ [x'] ++ filter (>= x') a

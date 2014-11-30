@@ -4,6 +4,7 @@ module Cis194.Hw.Week6Spec where
 import Cis194.Hw.Week6
 
 import Data.Aeson
+import Data.Monoid
 import Test.Hspec
 
 import qualified Data.ByteString.Lazy.Char8 as B
@@ -40,3 +41,11 @@ spec = do
     it "should load data directly" $ do
       mkts <- loadData
       length mkts `shouldBe` 8144
+
+  describe "OrdList" $ do
+    it "should maintain order" $ do
+      let evens = OrdList [2,4,6] :: OrdList Integer
+      let odds = OrdList [1,3,5] :: OrdList Integer
+      let combined = evens <> odds
+
+      combined `shouldBe` OrdList [1,2,3,4,5,6]
