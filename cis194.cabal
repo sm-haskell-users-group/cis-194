@@ -21,6 +21,8 @@ Library
   Other-Modules:
   Build-Depends:        base >= 4 && < 5
                       , containers
+                      , aeson >= 0.8.0.2
+                      , bytestring >= 0.10.4.0
 
 Test-Suite spec
   Type:                 exitcode-stdio-1.0
@@ -30,6 +32,8 @@ Test-Suite spec
   Ghc-Options:          -Wall
   Main-Is:              Spec.hs
   Build-Depends:        base
-                      , hspec
                       , containers
+                      , aeson >= 0.8.0.2
+                      , bytestring >= 0.10.4.0
+                      , hspec >= 2.1
                       , QuickCheck
