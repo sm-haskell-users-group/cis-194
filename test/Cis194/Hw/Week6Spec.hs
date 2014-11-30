@@ -63,3 +63,12 @@ spec = do
     it "should not find markets that don't exist" $ do
       mkts <- loadData
       (fmap fmid $ firstFound "blahblahblah" mkts) `shouldBe` Nothing
+
+  describe "lastFound" $ do
+    it "should find markets" $ do
+      mkts <- loadData
+      (fmap fmid $ lastFound "Madison" mkts) `shouldBe` Just 1005967
+
+    it "should not find markets that don't exist" $ do
+      mkts <- loadData
+      (fmap fmid $ lastFound "blahblahblah" mkts) `shouldBe` Nothing
