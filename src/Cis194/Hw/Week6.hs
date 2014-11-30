@@ -6,6 +6,7 @@ import Data.Monoid
 import GHC.Generics
 
 import qualified Data.ByteString.Lazy.Char8 as B
+import qualified Data.Maybe as M
 import qualified Data.Text as T
 
 ynToBool :: Value -> Value
@@ -53,3 +54,9 @@ instance Ord a => Monoid (OrdList a) where
 type Searcher m = T.Text -> [Market] -> m
 search :: Monoid m => (Market -> m) -> Searcher m
 search toM name mkts = foldr (mappend . toM) mempty $ filter ((T.isInfixOf name) . marketname) mkts
+
+compose2 :: (c -> d) -> (a -> b -> c) -> a -> b -> d
+compose2 = (.) . (.)
+
+firstFound :: Searcher (Maybe Market)
+firstFound = compose2 M.listToMaybe (search (:[]))

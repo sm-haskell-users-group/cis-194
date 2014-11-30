@@ -54,3 +54,12 @@ spec = do
       let combined = evens <> odds
 
       combined `shouldBe` OrdList [1,2,3,4,5,6]
+
+  describe "firstFound" $ do
+    it "should find markets" $ do
+      mkts <- loadData
+      (fmap fmid $ firstFound "Madison" mkts) `shouldBe` Just 1002454
+
+    it "should not find markets that don't exist" $ do
+      mkts <- loadData
+      (fmap fmid $ firstFound "blahblahblah" mkts) `shouldBe` Nothing
