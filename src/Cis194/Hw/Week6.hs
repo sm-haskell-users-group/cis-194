@@ -49,3 +49,7 @@ instance Ord a => Monoid (OrdList a) where
   mempty = OrdList []
   mappend (OrdList xs) (OrdList ys) = OrdList $ foldr insert xs ys
     where insert x' a = filter (< x') a ++ [x'] ++ filter (>= x') a
+
+type Searcher m = T.Text -> [Market] -> m
+search :: Monoid m => (Market -> m) -> Searcher m
+search toM name mkts = foldr (mappend . toM) mempty $ filter ((T.isInfixOf name) . marketname) mkts

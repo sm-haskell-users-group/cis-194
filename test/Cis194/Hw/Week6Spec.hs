@@ -42,6 +42,11 @@ spec = do
       mkts <- loadData
       length mkts `shouldBe` 8144
 
+    it "should search for markets by name" $ do
+      mkts <- loadData
+      (length $ search (:[]) "Brandywine" mkts) `shouldBe` 1
+      (length $ search (:[]) "Madison" mkts) `shouldBe` 19
+
   describe "OrdList" $ do
     it "should maintain order" $ do
       let evens = OrdList [2,4,6] :: OrdList Integer
