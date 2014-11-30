@@ -18,6 +18,7 @@ Library
                       , Cis194.Hw.LogAnalysis
                       , Cis194.Hw.Week4
                       , Cis194.Hw.Week5
+                      , Cis194.Hw.Week6
   Other-Modules:
   Build-Depends:        base >= 4 && < 5
                       , containers
