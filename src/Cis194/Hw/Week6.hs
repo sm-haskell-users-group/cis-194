@@ -63,3 +63,6 @@ firstFound = compose2 M.listToMaybe (search (:[]))
 
 lastFound :: Searcher (Maybe Market)
 lastFound = compose2 (M.listToMaybe . reverse) (search (:[]))
+
+allFound :: Searcher [Market]
+allFound = search (:[])
