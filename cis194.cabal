@@ -24,6 +24,7 @@ Library
                       , containers
                       , aeson >= 0.8.0.2
                       , bytestring >= 0.10.4.0
+                      , text >= 1.2.0.0
 
 Test-Suite spec
   Type:                 exitcode-stdio-1.0
@@ -35,6 +36,7 @@ Test-Suite spec
   Build-Depends:        base
                       , containers
                       , aeson >= 0.8.0.2
+                      , text >= 1.2.0.0
                       , vector >= 0.10.12.1
                       , bytestring >= 0.10.4.0
                       , hspec >= 2.1

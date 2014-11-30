@@ -31,3 +31,8 @@ spec = do
 
     it "should parse values that include \"Y\" and \"N\"" $ do
       parseData "[\"Y\", \"N\", \"Y\", \"N\"]" `shouldBe` Right (Array $ V.fromList [Bool True, Bool False, Bool True, Bool False])
+
+    it "should parse markets" $ do
+      dat <- B.readFile "data/markets.json"
+      let (Right markets) = parseMarkets dat
+      length markets `shouldBe` 8144
