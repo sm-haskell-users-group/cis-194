@@ -8,6 +8,7 @@ import Data.Monoid
 import Test.Hspec
 
 import qualified Data.ByteString.Lazy.Char8 as B
+import qualified Data.List as L
 import qualified Data.Vector as V
 
 main :: IO ()
@@ -90,3 +91,9 @@ spec = do
     it "should return 0 for nonexistent markets" $ do
       mkts <- loadData
       numberFound "blahblahblah" mkts `shouldBe` 0
+
+  describe "orderedNtoS" $ do
+    it "should order markets from North to South" $ do
+      mkts <- loadData
+      let madison = fmap y $ orderedNtoS "Madison" mkts
+      madison `shouldBe` L.sort madison

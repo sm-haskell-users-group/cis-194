@@ -69,3 +69,15 @@ allFound = search (:[])
 
 numberFound :: Searcher Int
 numberFound = compose2 length allFound
+
+data NtoSMarket = NtoSMarket { getNSMarket :: Market }
+    deriving (Show)
+
+instance Eq NtoSMarket where
+  (==) (NtoSMarket l) (NtoSMarket r) = (y l) == (y r)
+
+instance Ord NtoSMarket where
+  compare (NtoSMarket l) (NtoSMarket r) = compare (y l) (y r)
+
+orderedNtoS :: Searcher [Market]
+orderedNtoS = compose2 ((fmap getNSMarket) . getOrdList) (search (OrdList . (:[]) . NtoSMarket))
