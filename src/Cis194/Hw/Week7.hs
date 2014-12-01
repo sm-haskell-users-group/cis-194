@@ -78,7 +78,10 @@ randomInts x = take x $ randomList $ mkStdGen x
 --   hp2ps -c Week7.hp
 minMax :: [Int] -> Maybe (Int, Int)
 minMax [] = Nothing -- no min or max if there are no elements
-minMax xs = Just (minimum xs, maximum xs)
+minMax xs = Just $ L.foldl' acc (head xs, head xs) $ tail xs
+  where acc (min', max') x | x < min' = (x, max')
+        acc (min', max') x | x > max' = (min', x)
+        acc xs'          _ = xs'
 
 main :: IO ()
 main = do
