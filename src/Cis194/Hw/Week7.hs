@@ -80,6 +80,10 @@ minMax :: [Int] -> Maybe (Int, Int)
 minMax [] = Nothing -- no min or max if there are no elements
 minMax xs = Just (minimum xs, maximum xs)
 
+main :: IO ()
+main = do
+  print $ show $ minMax $ randomInts 1000000
+
 -- e10: Profile memory usage pt. 2
 -- Implement this better version of minMax that takes advantage of laziness,
 -- then run again with +RTS -s, and include the improved memory footprint
