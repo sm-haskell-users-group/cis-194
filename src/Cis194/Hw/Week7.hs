@@ -69,7 +69,7 @@ randomList seed = x : (randomList seed')
 -- e08: Write a function randomInts such that randomInts n is a pseudo-random
 -- sequence of Ints, with length n.
 randomInts :: Int -> [Int]
-randomInts _ = undefined
+randomInts x = take x $ randomList $ mkStdGen x
 
 -- e09: Profile memory usage
 --
