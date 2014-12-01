@@ -62,7 +62,8 @@ ruler = streamMap (minDiv 0) nats
 -- e07: Write a function that produces an infinite pseudo-random sequence,
 -- given a generator of type g:
 randomList :: (Random a, RandomGen g) => g -> [a]
-randomList _ = undefined
+randomList seed = x : (randomList seed')
+  where (x, seed') = random seed
 -- The `random` function will be helpful.
 
 -- e08: Write a function randomInts such that randomInts n is a pseudo-random
