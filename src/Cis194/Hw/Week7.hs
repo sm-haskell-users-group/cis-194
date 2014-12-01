@@ -1,6 +1,7 @@
 module Cis194.Hw.Week7 where
 
 import System.Random
+import qualified Data.List as L
 
 -- e01a: Define fib so that fib n computes the nth Fibonacci number Fn:
 fib :: Integer -> Integer
@@ -28,7 +29,8 @@ streamToList (Cons x xs) = x : (streamToList xs)
 -- e04: Make your own instance of Show for Stream which works by showing only
 -- some prefix of a stream (say, the first 20 elements)
 instance Show a => Show (Stream a) where
-  show _ = undefined
+  show xs = "Stream(" ++ middle xs ++ ", ...)"
+    where middle = (L.intercalate ", ") . (fmap show) . (take 20) . streamToList
 
 -- e05a: Write a function which generates a stream containing infinitely many
 -- copies of the given element:
