@@ -56,7 +56,8 @@ nats = streamFromSeed (+1) 0
 
 -- e06b: Define the stream ruler which corresponds to the "ruler function"
 ruler :: Stream Integer
-ruler = undefined
+ruler = streamMap (minDiv 0) nats
+  where minDiv acc x = if x /= 0 && mod x 2 == 0 then minDiv (acc+1) (x `div` 2) else acc
 
 -- e07: Write a function that produces an infinite pseudo-random sequence,
 -- given a generator of type g:
