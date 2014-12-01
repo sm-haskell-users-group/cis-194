@@ -145,3 +145,26 @@ splitQuads mkts = foldr acc ([],[],[],[]) mkts
         acc m (nw, ne, sw, se) | x m <  midx && y m <  midy = (nw, ne, m : sw, se)
         acc m (nw, ne, sw, se) | x m >= midx && y m <  midy = (nw, ne, sw, m : se)
         acc _ r = r
+
+--   Count the number of food options a given market has:
+
+type FoodOptions = Integer
+
+countFoodOptions :: Market -> FoodOptions
+countFoodOptions m = foldr (\x' a -> if x' m then a + 1 else a) 0 accessors
+  where accessors =
+          [ bakedgoods
+          , cheese
+          , eggs
+          , flowers
+          , herbs
+          , honey
+          , jams
+          , maple
+          , meat
+          , nuts
+          , poultry
+          , seafood
+          , vegetables
+          , wine
+          ]
