@@ -182,3 +182,32 @@ regionalOptions mkts = (work nw, work ne, work sw, work se)
   where (nw, ne, sw, se) = splitQuads mkts
         work :: [Market] -> OptionsToMarkets
         work xs = fmap (\ys -> (head ys, length ys)) $ L.group $ L.sort $ fmap countFoodOptions xs
+
+--   Split an individual OptionsToMarkets dataset into two parts given a
+--   threshold. This is intended to be used interactively, since the threshold
+--   varies per dataset.
+
+groupOptions :: FoodOptions -> OptionsToMarkets -> (OptionsToMarkets, OptionsToMarkets)
+groupOptions threshold om = (filter ((< threshold) . fst) om, filter ((>= threshold) . fst) om)
+
+type OptionsFewerManyTuple = (Int, Int)
+sumStats :: FoodOptions -> OptionsToMarkets -> OptionsFewerManyTuple
+sumStats = compose2 work groupOptions
+  where work :: (OptionsToMarkets, OptionsToMarkets) -> OptionsFewerManyTuple
+        work (under, over) = (collect under, collect over)
+        collect :: OptionsToMarkets -> Int
+        collect = foldr ((+) . snd) 0
+
+--   The range of variety at any given farmer's market starts at 0 (no food available)
+--   and goes all the way up to 14 (14 different kinds of food available).
+--   (14 just happens to be the maximum for this dataset)
+
+-- λ *Cis194.Hw.Week6> (nw,ne,sw,se) <- loadData >>= (return . regionalOptions)
+-- λ *Cis194.Hw.Week6> sumStats 8 nw
+-- (446,249)
+-- λ *Cis194.Hw.Week6> sumStats 8 ne
+-- (2473,1198)
+-- λ *Cis194.Hw.Week6> sumStats 8 sw
+-- (830,320)
+-- λ *Cis194.Hw.Week6> sumStats 8 se
+-- (1760,844)
