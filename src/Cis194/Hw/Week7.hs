@@ -40,7 +40,7 @@ streamRepeat x = Cons x (streamRepeat x)
 -- e05b: Write a function which applies a function to every element of a
 -- Stream:
 streamMap :: (a -> b) -> Stream a -> Stream b
-streamMap _ _ = undefined
+streamMap op (Cons x xs) = Cons (op x) $ streamMap op xs
 
 -- e05c: Write a function which generates a Stream from a "seed" of type a,
 -- which is the first element of the stream, and an "unfolding rule" of type
