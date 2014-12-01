@@ -126,3 +126,22 @@ instance Ord NtoSMarket where
 
 orderedNtoS :: Searcher [Market]
 orderedNtoS = compose2 ((fmap getNSMarket) . getOrdList) (search (OrdList . (:[]) . NtoSMarket))
+
+-- Extra stuff we can learn from the data:
+--   What does the comparison of Farmer's Markets with many food options vs
+--   fewer options look like?
+
+--   Let's start by splitting up the four quadrants of the US.
+--   (Hawaii gets lumped into SW, Alaska into NW. Oh well.)
+
+centerXY :: (Double, Double)
+centerXY = (-101.4146873, 39.7820819)
+
+splitQuads :: [Market] -> ([Market], [Market], [Market], [Market])
+splitQuads mkts = foldr acc ([],[],[],[]) mkts
+  where (midx, midy) = centerXY
+        acc m (nw, ne, sw, se) | x m <  midx && y m >= midy = (m : nw, ne, sw, se)
+        acc m (nw, ne, sw, se) | x m >= midx && y m >= midy = (nw, m : ne, sw, se)
+        acc m (nw, ne, sw, se) | x m <  midx && y m <  midy = (nw, ne, m : sw, se)
+        acc m (nw, ne, sw, se) | x m >= midx && y m <  midy = (nw, ne, sw, m : se)
+        acc _ r = r
