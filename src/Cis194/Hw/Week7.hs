@@ -35,7 +35,7 @@ instance Show a => Show (Stream a) where
 -- e05a: Write a function which generates a stream containing infinitely many
 -- copies of the given element:
 streamRepeat :: a -> Stream a
-streamRepeat _ = undefined
+streamRepeat x = Cons x (streamRepeat x)
 
 -- e05b: Write a function which applies a function to every element of a
 -- Stream:
