@@ -6,6 +6,7 @@ import Data.Monoid
 import GHC.Generics
 
 import qualified Data.ByteString.Lazy.Char8 as B
+import qualified Data.List as L
 import qualified Data.Maybe as M
 import qualified Data.Text as T
 
@@ -168,3 +169,16 @@ countFoodOptions m = foldr (\x' a -> if x' m then a + 1 else a) 0 accessors
           , vegetables
           , wine
           ]
+
+--   Transform [Market] per-quadrant into OptionsToMarkets. This will get us to
+--   the point where we can start reasoning about the number of options per
+--   regional market.
+
+type NumberOfMarkets = Int
+type OptionsToMarkets = [(FoodOptions, NumberOfMarkets)]
+
+regionalOptions :: [Market] -> (OptionsToMarkets, OptionsToMarkets, OptionsToMarkets, OptionsToMarkets)
+regionalOptions mkts = (work nw, work ne, work sw, work se)
+  where (nw, ne, sw, se) = splitQuads mkts
+        work :: [Market] -> OptionsToMarkets
+        work xs = fmap (\ys -> (head ys, length ys)) $ L.group $ L.sort $ fmap countFoodOptions xs
