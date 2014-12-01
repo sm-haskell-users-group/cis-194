@@ -211,3 +211,22 @@ sumStats = compose2 work groupOptions
 -- (830,320)
 -- λ *Cis194.Hw.Week6> sumStats 8 se
 -- (1760,844)
+--
+--   This isn't too surprising, since the data suggests the North East has the most
+--   farmer's markets. What about ratio?
+
+type OptionsFewerManyPercentage = (Double, Double)
+showStats :: OptionsFewerManyTuple -> OptionsFewerManyPercentage
+showStats (x', y') = ((fromIntegral x') / total, (fromIntegral y') / total)
+  where total = fromIntegral (x' + y')
+
+-- λ *Cis194.Hw.Week1 Cis194.Hw.Week6 L S> compose2 showStats sumStats 8 nw
+-- (0.641726618705036,0.35827338129496406)
+-- λ *Cis194.Hw.Week1 Cis194.Hw.Week6 L S> compose2 showStats sumStats 8 ne
+-- (0.6736584037047126,0.32634159629528736)
+-- λ *Cis194.Hw.Week1 Cis194.Hw.Week6 L S> compose2 showStats sumStats 8 sw
+-- (0.7217391304347827,0.2782608695652174)
+-- λ *Cis194.Hw.Week1 Cis194.Hw.Week6 L S> compose2 showStats sumStats 8 se
+-- (0.6758832565284179,0.3241167434715822)
+--
+--   Interestingly, it seems like the ratio is maintained per region.
