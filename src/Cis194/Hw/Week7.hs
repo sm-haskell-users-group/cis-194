@@ -16,7 +16,7 @@ fibs1 = fmap fib [0..]
 -- fibs1, but computing the first n elements of fibs2 requires only (roughly) n
 -- addition operations:
 fibs2 :: [Integer]
-fibs2 = undefined
+fibs2 = [0,1] ++ zipWith (\x y -> (fibs2 !! x) + (fibs2 !! y)) [0..] [1..]
 
 -- Stream is a data type that _must_ be infinite:
 data Stream a = Cons a (Stream a)
