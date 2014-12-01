@@ -47,7 +47,7 @@ streamMap op (Cons x xs) = Cons (op x) $ streamMap op xs
 -- a -> a which specifies how to transform the seed into a new seed, to be used
 -- for generating the rest of the stream:
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed _ _ = undefined
+streamFromSeed op x = Cons x $ streamFromSeed op (op x)
 -- Example: streamToList (streamFromSeed ('x' :) "o") == ["o", "xo", "xxo", "xxxo", "xxxxo", ... ]
 
 -- e06a: Define the stream nats which contains the infinite list of natural numbers 0, 1, 2, ...
