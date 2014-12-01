@@ -23,7 +23,7 @@ data Stream a = Cons a (Stream a)
 
 -- e03: Write a function to convert a Stream to an infinite list:
 streamToList :: Stream a -> [a]
-streamToList _ = undefined
+streamToList (Cons x xs) = x : (streamToList xs)
 
 -- e04: Make your own instance of Show for Stream which works by showing only
 -- some prefix of a stream (say, the first 20 elements)
