@@ -4,7 +4,9 @@ import System.Random
 
 -- e01a: Define fib so that fib n computes the nth Fibonacci number Fn:
 fib :: Integer -> Integer
-fib _ = undefined
+fib n | n <= 0 = 0
+fib 1 = 1
+fib n = (fib $ n-2) + (fib $ n-1)
 
 -- e01b: Now use fib to define the infinite list of all Fibonacci numbers:
 fibs1 :: [Integer]
