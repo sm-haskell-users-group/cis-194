@@ -52,7 +52,7 @@ streamFromSeed op x = Cons x $ streamFromSeed op (op x)
 
 -- e06a: Define the stream nats which contains the infinite list of natural numbers 0, 1, 2, ...
 nats :: Stream Integer
-nats = undefined
+nats = streamFromSeed (+1) 0
 
 -- e06b: Define the stream ruler which corresponds to the "ruler function"
 ruler :: Stream Integer
