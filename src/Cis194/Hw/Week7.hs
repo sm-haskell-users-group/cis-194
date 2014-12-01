@@ -10,7 +10,7 @@ fib n = (fib $ n-2) + (fib $ n-1)
 
 -- e01b: Now use fib to define the infinite list of all Fibonacci numbers:
 fibs1 :: [Integer]
-fibs1 = undefined
+fibs1 = fmap fib [0..]
 
 -- e02: Define the infinite list fibs2 so that it has the same elements as
 -- fibs1, but computing the first n elements of fibs2 requires only (roughly) n
