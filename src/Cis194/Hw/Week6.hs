@@ -88,5 +88,38 @@ search f t ms = L.foldl' mappend mempty (L.map f ms')
 
 -- ex7
 
+compose2 :: (c -> d) -> (a -> b -> c) -> a -> b -> d
+compose2 = (.) . (.)
+
 firstFound :: Searcher (Maybe Market)
-firstFound t ms = undefined
+firstFound = compose2 getFirst (search (First . Just))
+
+-- ex8
+
+lastFound :: Searcher (Maybe Market)
+lastFound = compose2 getLast (search (Last . Just))
+
+-- ex9
+
+allFound :: Searcher [Market]
+allFound = search (:[])
+
+-- ex10
+
+numberFound :: Searcher Int
+numberFound = compose2 getSum (search (const $ Sum 1))
+
+-- ex11
+
+data OrdMarket = OrdMarket { getOrdMarket :: Market }
+               deriving (Show)
+
+instance Eq OrdMarket where
+  a == b = (y . getOrdMarket) a == (y . getOrdMarket) b
+
+instance Ord OrdMarket where
+  a <= b = (y . getOrdMarket) a >= (y . getOrdMarket) b
+
+orderedNtoS :: Searcher [Market]
+orderedNtoS = compose2 (L.map getOrdMarket . getOrdList)
+              (search (OrdList . (:[]) . OrdMarket))
