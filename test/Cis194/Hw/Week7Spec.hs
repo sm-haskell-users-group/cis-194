@@ -70,3 +70,7 @@ spec = do
   describe "randomInts" $ do
     it "should produce a pseudo-random list of ints of a specified length" $ do
       length (randomInts 5) `shouldBe` 5
+
+  describe "fib4" $ do
+    it "should figure out the correct number in the sequence" $ do
+      fib4 10 `shouldBe` 55

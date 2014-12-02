@@ -108,5 +108,27 @@ main = do
 --     case for zero). Try computing the one millionth or even ten millionth
 --     Fibonacci number.
 
+data Mat2x2 = Mat2x2 ((Integer, Integer), (Integer, Integer))
+  deriving (Show)
+
+mkMat :: Integer -> Integer -> Integer -> Integer -> Mat2x2
+mkMat a b c d = Mat2x2 ((a, b), (c, d))
+
+instance Num Mat2x2 where
+  (*) (Mat2x2 ((   x1,          x2),
+               (   x3,          x4)))
+      (Mat2x2 ((   y1,          y2),
+               (   y3,          y4))) =
+      Mat2x2 ((x1*y1+x2*y3, x1*y2+x2*y4),
+              (x3*y1+x4*y3, x3*y2+x4*y4))
+  (+) = undefined
+  (-) = undefined
+  abs = undefined
+  signum = undefined
+  fromInteger = undefined
+
 fib4 :: Integer -> Integer
-fib4 _ = undefined
+fib4 n | n <= 0 = 0
+fib4 1 = 1
+fib4 n = x -- ^ (n - 1), to compensate for starting on the 2nd number.
+  where Mat2x2 ((x, _), (_, _)) = (mkMat 1 1 1 0) ^ (n - 1)
